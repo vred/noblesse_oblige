@@ -1,5 +1,4 @@
 #include "wtc.h"
-#include
 
 //Print out a matrix to stdout
 int printMatrix(int** M, int n){
