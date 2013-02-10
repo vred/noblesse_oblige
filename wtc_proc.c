@@ -1,22 +1,24 @@
-#include "wtc.h"  include everything
-
+#include "wtc.h" // include everything
+/*
 int child(n) {
- /* int i, j;
+  int i, j;
   for (j = 1; j < n; j++) {
 
-  }*/
+  }
 }
 
 int parent() {
  // shm_open
 }
+*/
 
-void algorithm(int n, int** mat) {
+//Warshall's algorithm, raw
+int** algorithm(int n, int** mat) {
   int i,j,k;
-  for (k = 1; k < n; k++) {
-    for (i = 1; i < n; i++) {
+  for (k = 0; k < n; k++) {
+    for (i = 0; i < n; i++) {
       if (mat[i][k] == 1) { //if mat[i][k] != 1, don't need to bother checking mat[k][j]
-        for (j = 1; j < n; j++) {
+        for (j = 0; j < n; j++) {
           if (mat[k][j] == 1) {
             mat[i][j] = 1;
           }
@@ -24,13 +26,14 @@ void algorithm(int n, int** mat) {
       }
     }
   }
+  return mat;
 }
 
-
+/*
 int wtc_proc(int** matrix, int nvertices, int nprocs) {
   int PID = fork();
   if (PID == 0)
     child();
   else
     parent();
-}
+}*/

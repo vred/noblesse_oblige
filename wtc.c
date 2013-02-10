@@ -1,8 +1,8 @@
 #include "wtc.h"
-
+#include "wtc_proc.c"
 //Print out a matrix to stdout
 int printMatrix(int** M, int n){
-	
+
 	int i,j;
 	printf("   ");
 	for(i = 0; i<n; i++){
@@ -11,19 +11,19 @@ int printMatrix(int** M, int n){
 		}
 		printf("\n   ");
 	}
-	print("\n");
-	
+	printf("\n");
+
 	return 0;
 }
 
 int main(int argc, char** argv){
-	
+
 	//Check for correct # inputs
 	if(argc!=3){
 		fprintf(stderr,"Invalid number of arguments!\n");
 		return -1;
 	}
-	
+
 	//Represents the algorithm which the user desires to calculated
 	//the transitive closure matrix with. Must be 1, 2, 3, or 4.
 	int choice = atoi(argv[1]);
@@ -31,7 +31,7 @@ int main(int argc, char** argv){
 		fprintf(stderr,"Invalid choice!\n");
 		return -1;
 	}
-	
+
 	FILE* fp;
 	fp = fopen(argv[2],"r+");
 	//Make sure that the file is valid
@@ -39,14 +39,14 @@ int main(int argc, char** argv){
 		fprintf(stderr,"Error opening file!\n");
 		return -1;
 	}
-	
+
 	//Store the number of processes/threads to create and the
 	//number of vertices (read from the input file);
 	int num_pt = 0;
 	int num_ver = 0;
 	fscanf(fp,"%d",&num_pt);
 	fscanf(fp,"%d",&num_ver);
-	
+
 	int i,j;
 	//Create the adjacency matrix
 	int** A = (int**)malloc(num_ver*sizeof(int*));
@@ -65,26 +65,28 @@ int main(int argc, char** argv){
 		if(fscanf(fp,"%d",&j)==EOF){break;}
 		A[i-1][j-1]=1;
 	}
-	
+
 	printMatrix(A,num_ver);
-	
+
 	//i.e. Calculate with processes, using algorithm 2
 	if(choice==1){
-		wtc_proc(A, num_ver, num_pt);
+		//wtc_proc(A, num_ver, num_pt);
+                int** B = algorithm(num_ver, A);
+                printMatrix(B, num_ver);
 	}
 	//i.e. Calculate with threads, using algorithm 2
 	else if(choice==2){
-		wtc_thr(A, num_ver, num_pt);
+		//wtc_thr(A, num_ver, num_pt);
 	}
 	//i.e. Calculate with processes, using bag of tasks algorithm
 	else if(choice==3){
-		wtc_btproc(A, num_ver, num_pt);
+		//wtc_btproc(A, num_ver, num_pt);
 	}
 	//i.e. Calculate with threads, using bag of tasks algorithm
 	else{
-		wtc_btthr(A, num_ver, num_pt);
+		//wtc_btthr(A, num_ver, num_pt);
 	}
-	
+
 	return 0;
 }
 
