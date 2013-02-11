@@ -3,7 +3,6 @@
 typedef struct sharedData{
   sem_t* p2c;
   sem_t* c2p;
-  int x;
   } sharedData;
 
 int child(int n) {
@@ -14,34 +13,32 @@ int child(int n) {
 }
 
 int parent(int numProcs) {
-  printf("hey\n");
+  //Create shared memory
   int shmid;
   void* shared_memory=(void*)0;
   sharedData* shared;
+  //Shmid is the ID of the shared memory
   shmid = shmget((key_t)1111, sizeof(sharedData), 0666 | IPC_CREAT);
   if(shmid==-1){
     fprintf(stderr,"Shget failed! \n");
     exit(EXIT_FAILURE);
   }
+  //Gives current process access to shared memory space
   shared_memory=shmat(shmid, (void*)0, 0);
   if(shared_memory == (void*)-1) {
     fprintf(stderr, "Shmat failed!\n");
     exit(EXIT_FAILURE);
   }
+  //shared is our data structure containing our semaphore arrays
   shared = (sharedData*)shared_memory;
 
-// Two arrays of semaphores, 1 for parent to lock, 1 for child to lock
+// Two arrays of semaphores, 1 for parent to inform child, 1 for child to inform parent
   shared->p2c = (sem_t*)malloc(numProcs*sizeof(sem_t));
   shared->c2p = (sem_t *)malloc(numProcs*sizeof(sem_t));
- shared->x = 0;
- pid_t pid = fork();
+  pid_t pid = fork();
   if(!pid){
-    shared->x++;
-    printf("Yo, I'm the parent and x is %d.\n", shared->x);
   }
   else{
-    shared->x=shared->x+2;
-    printf("child, x is %d\n", shared->x);
   }
   return 0;
 }
