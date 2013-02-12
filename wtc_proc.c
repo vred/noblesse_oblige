@@ -54,22 +54,19 @@ int parent(int numProcs) {
   struct sembuf sem_lock = { 0, -1, SEM_UNDO };
   //Calling semop with this struct post (unlock) the semaphore
   struct sembuf sem_unlock = { 0, 1, SEM_UNDO };
+  //Calling semctl with SETVAL and this union will set the semaphore to 1
   union semun setvalue = {1};
-  printf("semaphore value is %d\n", semctl(semid,0,GETVAL));
   semctl(semid, 0, SETVAL, setvalue);
-  printf("and now semaphore value is %d\n", semctl(semid,0,GETVAL));
   pid_t pid = fork();
+  int k;
   if(!pid){ //i.e. I'm in the parent
-	  printf("P: I'm about to lock\n");
-	  semop(semid, &sem_lock, 1);
-	  printf("Parent: I have locked the semaphore\n");
-	  semop(semid, &sem_unlock, 1);
+	  //semop(semid, &sem_lock, 1);
+	  //semop(semid, &sem_unlock, 1);
+	  
   }
   else{ //i.e. I'm in the child
-	  printf("C: I'm about to lock\n");
-	  semop(semid, &sem_lock, 1);
-	  printf("Child: I have locked the semaphore\n");
-	  semop(semid, &sem_unlock, 1);
+	  //semop(semid, &sem_lock, 1);
+	  //semop(semid, &sem_unlock, 1);
   }
   return 0;
 }
