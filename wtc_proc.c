@@ -1,17 +1,11 @@
 #include "wtc.h" // include everything
 
-/*typedef struct sharedData{
-  sem_t* p2c;
-  sem_t* c2p;
+typedef struct sharedData{
+  sem_t* sems;
+  //sem_t* c2p;
+  int** M_prev; //k-1 version of Matrix
+  int** M_curr; //k version of Matrix;
   } sharedData;
-*/
-
-union semun {
-	int val;
-	struct semid_ds *buf;
-	unsigned short *array;
-	struct seminfo *__buf;
-};
 
 int child(int n) {
   int i, j;
@@ -20,45 +14,45 @@ int child(int n) {
   }
 }
 
-int parent(int numProcs) {
+//Manages the children
+int parent(int numProcs, int numVerts, int** matrix) {
   //Create shared memory
-  int semid;
   void* shared_memory=(void*)0;
-  //Shmid is the ID of the shared memory
-  semid = semget((key_t)2222, 1, 0666 | IPC_CREAT);
-  if(semid==-1){
-    fprintf(stderr,"semget failed! \n");
-    exit(EXIT_FAILURE);
-  }
+  sharedData* shared = NULL;
   
-  /*//Gives current process access to shared memory space
-  shared_memory=shmat(shmid, (void*)0, 0);
-  if(shared_memory == (void*)-1) {
-    fprintf(stderr, "semat failed!\n");
-    exit(EXIT_FAILURE);
-  }
-  //shared is our data structure containing our semaphore arrays
-  shared = (sharedData*)shared_memory;
+  //Necessary size for shared memory, enough for array of semaphores
+  //and two NxN matrices
+  int size = sizeof(sem_t)*numProcs+2*sizeof(int)*numVerts*numVerts;
+  
+  //ID for shared memory
+  int fd;
+  char* shm_name= "shared_memory";
+  
+  //Create shared memory file
+  fd=shm_open(shm_name, O_RDWR | O_CREAT, 0666);
+  if(fd == -1){
+		fprintf(stderr, "shm_open failure\n");
+		exit(1);
+	}
+	//Set shared memory size
+	if(ftruncate(fd,size) == -1){
+		fprintf(stderr, "ftruncate failure\n");
+		exit(1);
+	}
+	//Map shared memory
+	shared_memory = mmap(0,size,PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+	//Cast shared memory to appropriate data structure
+	shared = (sharedData*)shared_memory;
 
-// Two arrays of semaphores, 1 for parent to inform child, 1 for child to inform parent
-  shared->p2c = (sem_t *)malloc(numProcs*sizeof(sem_t));
-  shared->c2p = (sem_t *)malloc(numProcs*sizeof(sem_t));
   int k;
   //Initialize all the semaphores
-  for(k=0; k++ k<numProcs){
-	  if(sem_init(p2c[k], 1, ){
-		  
+  for(k=0; k++; k<numProcs){
+	  if(sem_init(&shared->sems[k], 1, 1)==-1){
+			fprintf(stderr,"sem_init failed\n");
+			exit(1);
 	  }
-  }*/
-  //Calling semop with this struct waits (lock) on the semaphore
-  struct sembuf sem_lock = { 0, -1, SEM_UNDO };
-  //Calling semop with this struct post (unlock) the semaphore
-  struct sembuf sem_unlock = { 0, 1, SEM_UNDO };
-  //Calling semctl with SETVAL and this union will set the semaphore to 1
-  union semun setvalue = {1};
-  semctl(semid, 0, SETVAL, setvalue);
-  pid_t pid = fork();
-  int k;
+  }
+	int pid = 0;
   if(!pid){ //i.e. I'm in the parent
 	  //semop(semid, &sem_lock, 1);
 	  //semop(semid, &sem_unlock, 1);
@@ -85,7 +79,7 @@ int** algorithm(int n, int** mat) {
       }
     }
   }
-  parent(5);
+  parent(5,5,mat);
   return mat;
 }
 
