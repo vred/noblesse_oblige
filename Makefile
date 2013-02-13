@@ -4,7 +4,7 @@ CFLAGS = -Wall
 all: wtc
 
 wtc:
-	$(CC) $(CFLAGS) -o wtc wtc.c -lrm
+	$(CC) $(CFLAGS) -o wtc wtc.c -lrt
 
 clean:
 	rm -f *.o
