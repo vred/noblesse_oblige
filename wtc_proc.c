@@ -7,9 +7,8 @@ int child(int n, sem_t* p2c, sem_t* c2p, int numVerts, int numProcs, int* M_prev
   printf("Yo, I'm child %d\n", n);
   int i,j,k;
   for(k=0; k<numVerts; k++){
-		printf("%d bout to lock sem\n", n);
-		sem_wait(&c2p[n]);
-		printf("%d done waiting\n",n);
+	  printf("%d is waiting\n", n);
+		sem_wait(&p2c[n]);
 		//These are the rows that this process is responsible for
 		//(where i%numProcs = n)
 		for(i = n; i<numVerts; i+=numProcs){
@@ -23,9 +22,6 @@ int child(int n, sem_t* p2c, sem_t* c2p, int numVerts, int numProcs, int* M_prev
 		}
 		sem_post(&c2p[n]);
 		printf("%d done my work \n",n);
-		sem_wait(&p2c[n]);
-		sem_post(&p2c[n]);
-		printf("%d moving on\n",n);
 	}
 	printf("%d exiting\n",n);
   exit(0);
@@ -71,12 +67,12 @@ int parent(int numProcs, int numVerts, int** matrix) {
 		}
 	}
 	int pid;
-		
+	
 	//Lock all semaphores before creating the children
 	//to guarantee no child finishes before every child has been made
 	for(k=0; k<numProcs; k++){
 		sem_wait(&p2c[k]);
-		//sem_wait(&c2p[k]);
+		sem_wait(&c2p[k]);
 	}
 
 	//Create the desired number of processes
@@ -89,22 +85,20 @@ int parent(int numProcs, int numVerts, int** matrix) {
 	}
 	
 	int m;
+	//This m is actually refers to the k iterations
 	for(m=0; m<numVerts; m++){
+		printf("k = %d\n",m);
+		//We can move onto the next iteration, so release the semaphores
+		for(k=0; k<numProcs; k++){
+			printf("releasing sem %d\n",k);
+			sem_post(&p2c[k]);
+		}
 		//Wait for all the child to parent semaphores to unlock to signal
 		//that all the children have done their rows before moving to the next
 		//iteration
 		for(k=0; k<numProcs; k++){
 			printf("still waiting on %d\n",k);
 			sem_wait(&c2p[k]);
-		}
-		printf("DONE WAITING!\n");
-		
-		//Once they've all been waited on, this means every child is done
-		//and we can move onto the next iteration, so release the semaphores
-		for(k=0; k<numProcs; k++){
-			printf("releasing sem %d\n",k);
-			sem_post(&c2p[k]);
-			sem_post(&p2c[k]);
 		}
 	}
 	
