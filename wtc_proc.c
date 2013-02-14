@@ -1,16 +1,37 @@
 #include "wtc.h" // include everything
 
-/*int child(int n) {
-  int i, j;
-  for (j = 1; j < n; j++) {
-
-  }
-}*/
+//Processes its assigned rows, based on the passed in argument
+//n, which represents the id of the process--i.e. which number child it is
+//and which semaphore applies to it
+int child(int n, sem_t* p2c, sem_t* c2p, int numVerts, int* M_prev, int* M_curr) {
+  printf("Yo, I'm child %d\n", n);
+  int i,j,k;
+  for(k=0; k<numVerts; k++){
+		printf("%d bout to lock sem\n", n);
+		sem_wait(&c2p[n]);
+		printf("%d done waiting\n",n);
+		if (M_prev[i*numVerts+k] == 1) { //if mat[i][k] != 1, don't need to bother checking mat[k][j]
+			for (j = 0; j < numVerts; j++) {
+				if (M_prev[i*numVerts+j] == 1) {
+					M_curr[i*numVerts+j] = 1;
+				}
+			}
+		}
+		sem_post(&c2p[n]);
+		printf("%d done my work \n",n);
+		sem_wait(&p2c[n]);
+		sem_post(&p2c[n]);
+		printf("%d moving on\n",n);
+	}
+	printf("%d exiting\n",n);
+  exit(0);
+}
 
 //Manages the children
 int parent(int numProcs, int numVerts, int** matrix) {
   //Create shared memory
-  sem_t* sems = NULL; //will contain array of semaphors
+  sem_t* p2c = NULL; //will contain array of semaphors
+  sem_t* c2p = NULL;
   int* M_prev = NULL; //pointers cannot be stored in shared memory,
   int* M_curr = NULL; //thus we must use a single-dimensional array to represent our matrix
   //Necessary size for shared memory, enough for array of semaphores
@@ -20,32 +41,23 @@ int parent(int numProcs, int numVerts, int** matrix) {
   
   //IDs for shared memory
   int fd1;
-  char* sem_name= "/shared_sems";
-  int fd2;
-  char* mp_name = "/shared_mp";
-  int fd3;
-  char* mc_name = "/shared_mc";
-  //Create shared memory file
-  fd1=shm_open(sem_name, O_RDWR | O_CREAT, 0666);
-  fd2=shm_open(mp_name, O_RDWR | O_CREAT, 0666);
-  fd3=shm_open(mc_name, O_RDWR | O_CREAT, 0666);
-  if(fd1==-1||fd2==-1||fd3==-1){
-		fprintf(stderr, "shm_open failure\n");
-		exit(1);
-	}
-	//Map shared memory
-	sems = (sem_t*)mmap(0,size1,PROT_READ | PROT_WRITE, MAP_SHARED, fd1, 0);
-	M_prev = (int*)mmap(0,size2,PROT_READ | PROT_WRITE, MAP_SHARED, fd1, 0);
-	M_curr = (int*)mmap(0,size2,PROT_READ | PROT_WRITE, MAP_SHARED, fd1, 0);
+  char* p2c_name= "/shared_sems"; //semaphore for process to alert children
+  //Create shared memory file and assign pointers
+  fd1=shm_open(p2c_name, O_RDWR | O_CREAT | O_TRUNC, 0666);
+  ftruncate(fd1,size1*2+size2*2); //make the memory file the right size
+  p2c = (sem_t*)mmap(0,size1*2+size2*2,PROT_READ | PROT_WRITE, MAP_SHARED, fd1, 0);
+  M_prev = (int*)(p2c+size1);
+  M_curr = (int*)(M_prev+size2);
+  c2p = (sem_t*)(M_curr+size2);	
+	
 	int k;
   //Initialize all the semaphores
   for(k=0; k<numProcs; k++){
-	  if(sem_init(&sems[k], 1, 1)==-1){
+	  if(sem_init(&p2c[k], 1, 1)==-1||sem_init(&c2p[k], 1, 1)==-1){
 			fprintf(stderr,"sem_init failed\n");
 			exit(1);
 	  }
   }
-
   //Copy original matrix to shared memory, which has it represented
   //as a 1-dimensional array
   int i, j;
@@ -54,14 +66,58 @@ int parent(int numProcs, int numVerts, int** matrix) {
 			M_prev[i*numVerts+j]=matrix[i][j];
 		}
 	}
+	int pid;
+		
+	//Lock all semaphores before creating the children
+	//to guarantee no child finishes before every child has been made
+	for(k=0; k<numProcs; k++){
+		sem_wait(&p2c[k]);
+		//sem_wait(&c2p[k]);
+	}
+
+	//Create the desired number of processes
+	for(k=0; k<numProcs; k++){
+		pid=fork();
+		if(!pid){ //i.e. I'm in the child
+	  	child(k,p2c,c2p,numVerts,M_prev,M_curr);
+		}
+		//Else I'm still in the parent
+	}
+	
+	int m;
+	for(m=0; m<numVerts; m++){
+		//Wait for all the child to parent semaphores to unlock to signal
+		//that all the children have done their rows before moving to the next
+		//iteration
+		usleep(50000);
+		for(k=0; k<numProcs; k++){
+			printf("still waiting on %d\n",k);
+			sem_wait(&c2p[k]);
+		}
+		printf("DONE WAITING!\n");
+		
+		//Once they've all been waited on, this means every child is done
+		//and we can move onto the next iteration, so release the semaphores
+		for(k=0; k<numProcs; k++){
+			printf("releasing sem %d\n",k);
+			sem_post(&c2p[k]);
+			sem_post(&p2c[k]);
+		}
+	}
+	
+	//Destroy all semaphores
+	for(k=0; k<numProcs; k++){
+	  if(sem_destroy(&p2c[k])==-1||sem_destroy(&c2p[k])==-1){
+			fprintf(stderr,"sem_destroy failed\n");
+			exit(1);
+	  }
+  }
   
-	int pid = 0;
-  if(!pid){ //i.e. I'm in the parent
-	  	  
-  }
-  else{ //i.e. I'm in the child
-	  
-  }
+  //Remove the shared memory
+  close(fd1);
+  shm_unlink(p2c_name);
+	
+  exit(0);
   return 0;
 }
 
@@ -79,7 +135,7 @@ int** algorithm(int n, int** mat) {
       }
     }
   }
-  parent(4,4,mat);
+  parent(6,4,mat);
   return mat;
 }
 
