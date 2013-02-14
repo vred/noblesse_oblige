@@ -3,18 +3,21 @@
 //Processes its assigned rows, based on the passed in argument
 //n, which represents the id of the process--i.e. which number child it is
 //and which semaphore applies to it
-int child(int n, sem_t* p2c, sem_t* c2p, int numVerts, int* M_prev, int* M_curr) {
+int child(int n, sem_t* p2c, sem_t* c2p, int numVerts, int numProcs, int* M_prev, int* M_curr) {
   printf("Yo, I'm child %d\n", n);
-  printf("%d\n",M_prev[0]);
   int i,j,k;
   for(k=0; k<numVerts; k++){
 		printf("%d bout to lock sem\n", n);
 		sem_wait(&c2p[n]);
 		printf("%d done waiting\n",n);
-		if (M_prev[i*numVerts+k] == 1) { //if mat[i][k] != 1, don't need to bother checking mat[k][j]
-			for (j = 0; j < numVerts; j++) {
-				if (M_prev[i*numVerts+j] == 1) {
-					M_curr[i*numVerts+j] = 1;
+		//These are the rows that this process is responsible for
+		//(where i%numProcs = n)
+		for(i = n; i<numVerts; i+=numProcs){
+			if (M_prev[i*numVerts+k] == 1) { //if mat[i][k] != 1, don't need to bother checking mat[k][j]
+				for (j = 0; j < numVerts; j++) {
+					if (M_prev[i*numVerts+j] == 1) {
+						M_curr[i*numVerts+j] = 1;
+					}
 				}
 			}
 		}
@@ -80,7 +83,7 @@ int parent(int numProcs, int numVerts, int** matrix) {
 	for(k=0; k<numProcs; k++){
 		pid=fork();
 		if(!pid){ //i.e. I'm in the child
-	  	child(k,p2c,c2p,numVerts,M_prev,M_curr);
+	  	child(k,p2c,c2p,numVerts,numProcs,M_prev,M_curr);
 		}
 		//Else I'm still in the parent
 	}
@@ -90,7 +93,6 @@ int parent(int numProcs, int numVerts, int** matrix) {
 		//Wait for all the child to parent semaphores to unlock to signal
 		//that all the children have done their rows before moving to the next
 		//iteration
-		usleep(50000);
 		for(k=0; k<numProcs; k++){
 			printf("still waiting on %d\n",k);
 			sem_wait(&c2p[k]);
