@@ -5,6 +5,7 @@
 //and which semaphore applies to it
 int child(int n, sem_t* p2c, sem_t* c2p, int numVerts, int* M_prev, int* M_curr) {
   printf("Yo, I'm child %d\n", n);
+  printf("%d\n",M_prev[0]);
   int i,j,k;
   for(k=0; k<numVerts; k++){
 		printf("%d bout to lock sem\n", n);
