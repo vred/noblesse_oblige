@@ -16,6 +16,20 @@ int printMatrix(int** M, int n){
 	return 0;
 }
 
+int printArrayMatrix(int* M, int n){
+	int i,j;
+	printf("   ");
+	for(i = 0; i<n; i++){
+		for(j = 0; j<n; j++){
+			printf("%d   ",M[i*n+j]);
+		}
+		printf("\n   ");
+	}
+	printf("\n");
+
+	return 0;
+}
+
 int main(int argc, char** argv){
 
 	//Check for correct # inputs
@@ -66,13 +80,11 @@ int main(int argc, char** argv){
 		A[i-1][j-1]=1;
 	}
 
-	printMatrix(A,num_ver);
+	//printMatrix(A,num_ver);
 
 	//i.e. Calculate with processes, using algorithm 2
 	if(choice==1){
-		//wtc_proc(A, num_ver, num_pt);
-                int** B = algorithm(num_ver, A);
-                printMatrix(B, num_ver);
+		wtc_proc(num_pt,num_ver,A);
 	}
 	//i.e. Calculate with threads, using algorithm 2
 	else if(choice==2){

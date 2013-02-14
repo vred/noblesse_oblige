@@ -14,3 +14,4 @@
 #include <sys/types.h>
 
 int printMatrix(int** M, int n);
+int printArrayMatrix(int* M, int n);
