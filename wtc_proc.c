@@ -9,18 +9,12 @@ int child(int n, sem_t* p2c, sem_t* c2p, int numVerts, int numProcs, int* M_prev
 		sem_wait(&p2c[n]);
 		//These are the rows that this process is responsible for
 		//(where i%numProcs = n)
-		if(k==0&&n==1){
-		}
 		for(i = n; i<numVerts; i+=numProcs){
 			for (j = 0; j < numVerts; j++) {
 				if ((M_prev[k*numVerts+j]==1&&M_prev[i*numVerts+k])||M_prev[i*numVerts+j]==1) {
 					M_curr[i*numVerts+j] = 1;
 				}
 			}
-		}
-		if(k==0&&n==1){
-			printArrayMatrix(M_prev,numVerts);
-			printArrayMatrix(M_curr,numVerts);
 		}
 		sem_post(&c2p[n]);
 		
