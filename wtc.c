@@ -1,5 +1,6 @@
 #include "wtc.h"
 #include "wtc_proc.c"
+#include "wtc_thr.c"
 //Print out a matrix to stdout
 int printMatrix(int** M, int n){
 
@@ -88,7 +89,7 @@ int main(int argc, char** argv){
 	}
 	//i.e. Calculate with threads, using algorithm 2
 	else if(choice==2){
-		//wtc_thr(A, num_ver, num_pt);
+		wtc_thr(num_pt, num_ver, A);
 	}
 	//i.e. Calculate with processes, using bag of tasks algorithm
 	else if(choice==3){
