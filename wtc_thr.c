@@ -1,7 +1,7 @@
 #include "wtc.h" 
 
 struct pt_mat {
-	long tid; 
+	int tid; 
 	pthread_mutex_t * p2c; // parent to child array
 	pthread_mutex_t * c2p; // child to parent array
 	int numVerts;
@@ -13,83 +13,94 @@ struct pt_mat {
 void *Thr(void *thrargs) {
 	struct pt_mat *mat; // mat contains all passed arguments 
 	mat = (struct pt_mat *)thrargs;
-  long t = (mat->tid);
+  int t = (mat->tid);
 	int i,j,k;
 	for(k=0; k<(mat->numVerts); k++) {
 		pthread_mutex_lock( &(mat->p2c[t]) ); // locks child to parent
-		for (i = (mat->tid); j < (mat->numVerts); i+=(mat->numThr)) {
+		for (i = t; i < (mat->numVerts); i+=(mat->numThr)) {
 			for(j = 0; j < (mat->numVerts); j++) { 
-				if ((mat->M_prev[i][j])==1) {
-					(mat->M_curr[i][j]) = 1;
-				}
+        if ( (mat->M_prev[k][j])==1 && ( (mat->M_prev[i][k])==1 || (mat->M_prev[i][j])==1 ) ) {
+        (mat->M_curr[i][j]) = 1;
+        printMatrix ((mat->M_curr),(mat->numVerts));
+        }
 			} 
 		}
-		pthread_mutex_unlock( &(mat->c2p[t])); // operations complete, unlocks and moves 
+    pthread_mutex_unlock(&(mat->p2c[t])); // done with operation, unlocks
 	}
-	
 	pthread_exit (NULL) ;
 }
 
-int wtc_thr(int numThr, int numVerts, int** matrix) {
+int wtc_thr(int nThr, int nVerts, int** matrix) {
+  struct timeval startt, endt;
+  gettimeofday(&startt, NULL );
 
-
-  	pthread_t thra[numThr]; // initialzies number of threads based on input argument.
-  	struct pt_mat matsrc[numThr];
-    pthread_mutex_t * p2c = NULL; // parent to child array
-    pthread_mutex_t * c2p = NULL;// child to parent array
+  	pthread_t thra[nThr]; // initialzies number of threads based on input argument.
+  	struct pt_mat matsrc[nThr];
+    pthread_mutex_t * p2c = malloc(sizeof(pthread_mutex_t)*nThr); // parent to child array
+    pthread_mutex_t * c2p = malloc(sizeof(pthread_mutex_t)*nThr);// child to parent array
 
   int k; // Initializing all the mutexes as follows:
-  for(k=0; k<numThr; k++) {
-  	if(pthread_mutex_init(&p2c[k], NULL)) {
-  		fprintf(stderr, "Dang, I messed up.");
-  		exit(1);
-  	}
+    
+  for(k=0; k<nThr; k++) {
+    pthread_mutex_init(&p2c[k], NULL);
+    pthread_mutex_init(&c2p[k], NULL);
+    
   }
-  int i, j, rc;
+  int rc;
   
   // Create desired number of threads 
-  for (k=0; k<numThr; k++) {
+  for (k=0; k<nThr; k++) {
   		matsrc[k].tid = k;
-  		matsrc[k].M_prev[i][j] = matrix[i][j];
-      matsrc[k].numVerts = numVerts;
-      matsrc[k].numThr = numThr;
+  		matsrc[k].M_prev = matrix;
+      matsrc[k].M_curr = matrix;
+      matsrc[k].numVerts = nVerts;
+      matsrc[k].numThr = nThr;
+      matsrc[k].p2c =  p2c;
+      matsrc[k].c2p = c2p;
       
   		rc = pthread_create(&thra[k], NULL, Thr, (void *)&matsrc[k]) ;
   		  if( rc ) {
-  		  	printf("ERROR; return code is %d \n", rc);
   		    exit( -1 );
   		}
   }
 
-  int m,y,z;
-  for (m=0; m<numVerts;m++) {
-  	for (k=0; k<numThr; k++) {
-  		pthread_mutex_unlock(&p2c[k]);
+  int m,y,z; // m represents k-iterations
+  for (m=0; m<nVerts;m++) {
+    // moving to the next iteration; releasing mutex
+  	for (k=0; k<nThr; k++) {
+  		
+  	} // waiting for all c2p mutexes to unlock...
+  	for (k=0; k<nThr; k++) {
+  		//pthread_mutex_lock(&c2p[k]);
+      //pthread_mutex_unlock(&c2p[k]);
   	}
-  	for (k=0; k<numThr; k++) {
-  		pthread_mutex_lock(&c2p[k]);
-  	}
-  	for(y=0; y<numVerts; y++) {
-  		for(z=0;z<numVerts;z++) {
-  			(matsrc->M_prev[y][z])=(matsrc->M_curr[y][z]);
+  	for(y=0; y<nVerts; y++) {
+    // pthread_mutex_lock(&p2c[k]);
+  		for(z=0;z<nVerts;z++) {
+  			 (matsrc->M_prev[y][z])=(matsrc->M_curr[y][z]);
   		}
+    // pthread_mutex_unlock(&p2c[k]);
   	}
-  }
 
-  for (k=0; k<numThr; k++) {
-  		pthread_join(thra[k], NULL );
-  		pthread_mutex_destroy( &p2c[k] );
-  		pthread_mutex_destroy( &c2p[k] );
+  }
+  
+// Joining pthreads and destroying the mutexes below:
+  for (k=0; k<nThr; k++) {
+  		pthread_join( thra[k], NULL );
+  		pthread_mutex_destroy( (matsrc[k].p2c));
+  		pthread_mutex_destroy( (matsrc[k].c2p));
+
 }
-  int* printmat; // Initializes matrix to print
-  for(i=0; i<numVerts; i++){
-    for(j=0; j<numVerts; j++){
-      printmat[i*numVerts+j]=(matsrc->M_curr[i][j]);
-    }
-  }
-  printf("Output:\n");
-  printArrayMatrix(printmat,numVerts);
 
+  printf("Output:\n");
+  printMatrix(matsrc->M_curr, nVerts);
+  // printArrayMatrix(printmat,numVerts);
+  gettimeofday(&endt, NULL);
+  int elapsedTime;
+  elapsedTime = (endt.tv_usec - startt.tv_usec);
+  printf("time = %u ", 
+      elapsedTime);
+  printf("microseconds \n");
   pthread_exit(NULL);
 }
 

@@ -3,6 +3,7 @@
 //Processes its assigned rows, based on the passed in argument
 //n, which represents the id of the process--i.e. which number child it is
 //and which semaphore applies to it
+
 int child(int n, sem_t* p2c, sem_t* c2p, int numVerts, int numProcs, int* M_prev, int* M_curr) {
   int i,j,k;
   for(k=0; k<numVerts; k++){
@@ -24,6 +25,8 @@ int child(int n, sem_t* p2c, sem_t* c2p, int numVerts, int numProcs, int* M_prev
 
 //Manages the children
 int wtc_proc(int numProcs, int numVerts, int** matrix) {
+	struct timeval startt, endt;
+	gettimeofday(&startt, NULL );
   //Create shared memory
   sem_t* p2c = NULL; //will contain array of semaphors
   sem_t* c2p = NULL;
@@ -123,6 +126,12 @@ int wtc_proc(int numProcs, int numVerts, int** matrix) {
   shm_unlink(mp_name);
   close(fd4);
   shm_unlink(c2p_name);
+  gettimeofday(&endt, NULL);
+	int elapsedTime;
+	elapsedTime = (endt.tv_usec - startt.tv_usec);
+	printf("time = %u ", 
+			elapsedTime);
+	printf("microseconds \n");
   return 0;
 }
 
