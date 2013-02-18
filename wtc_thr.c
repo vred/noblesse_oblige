@@ -19,10 +19,8 @@ void *Thr(void *thrargs) {
 		pthread_mutex_lock( &(mat->p2c[t]) ); // locks child to parent
 		for (i = t; i < (mat->numVerts); i+=(mat->numThr)) {
 			for(j = 0; j < (mat->numVerts); j++) { 
-        if ( (mat->M_prev[k][j])==1 && ( (mat->M_prev[i][k])==1 || (mat->M_prev[i][j])==1 ) ) {
-        (mat->M_curr[i][j]) = 1;
-        printMatrix ((mat->M_curr),(mat->numVerts));
-        }
+        if ( (mat->M_prev[k][j])==1 && ( (mat->M_prev[i][k])==1 || (mat->M_prev[i][j])==1 ) ) 
+          (mat->M_curr[i][j]) = 1;
 			} 
 		}
     pthread_mutex_unlock(&(mat->p2c[t])); // done with operation, unlocks
