@@ -19,7 +19,7 @@ void *Thr(void *thrargs) {
 		pthread_mutex_lock( &(mat->p2c[t]) ); // locks child to parent
 		for (i = t; i < (mat->numVerts); i+=(mat->numThr)) {
 			for(j = 0; j < (mat->numVerts); j++) { 
-        if ( (mat->M_prev[k][j])==1 && ( (mat->M_prev[i][k])==1 || (mat->M_prev[i][j])==1 ) ) 
+        if ( ( (mat->M_prev[k][j])==1 && (mat->M_prev[i][k]) ) || (mat->M_prev[i][j])==1 ) 
           (mat->M_curr[i][j]) = 1;
 			} 
 		}
@@ -66,19 +66,11 @@ int wtc_thr(int nThr, int nVerts, int** matrix) {
   for (m=0; m<nVerts;m++) {
       pthread_mutex_lock(&c2p[k]);
     // moving to the next iteration; releasing mutex
-  	for (k=0; k<nThr; k++) {
-  		
-  	} // waiting for all c2p mutexes to unlock...
-  	for (k=0; k<nThr; k++) {
-  		//pthread_mutex_lock(&c2p[k]);
-      //pthread_mutex_unlock(&c2p[k]);
-  	}
+
   	for(y=0; y<nVerts; y++) {
-  
-  		for(z=0;z<nVerts;z++) {
+  		for(z=0; z<nVerts; z++) {
   			 (matsrc->M_prev[y][z])=(matsrc->M_curr[y][z]);
   		}
-    
   	}
 pthread_mutex_unlock(&c2p[k]);
   }
