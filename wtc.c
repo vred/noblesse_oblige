@@ -5,12 +5,12 @@
 int printMatrix(int** M, int n){
 
 	int i,j;
-	printf("   ");
+	printf(" ");
 	for(i = 0; i<n; i++){
 		for(j = 0; j<n; j++){
-			printf("%d   ",M[i][j]);
+			printf("%d ",M[i][j]);
 		}
-		printf("\n   ");
+		printf("\n ");
 	}
 	printf("\n");
 
@@ -19,12 +19,12 @@ int printMatrix(int** M, int n){
 
 int printArrayMatrix(int* M, int n){
 	int i,j;
-	printf("   ");
+	printf(" ");
 	for(i = 0; i<n; i++){
 		for(j = 0; j<n; j++){
-			printf("%d   ",M[i*n+j]);
+			printf("%d ",M[i*n+j]);
 		}
-		printf("\n   ");
+		printf("\n ");
 	}
 	printf("\n");
 

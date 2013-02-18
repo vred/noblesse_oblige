@@ -18,10 +18,14 @@ void *Thr(void *thrargs) {
 	for(k=0; k<(mat->numVerts); k++) {
 		pthread_mutex_lock( &(mat->p2c[t]) ); // locks child to parent
 		for (i = t; i < (mat->numVerts); i+=(mat->numThr)) {
-			for(j = 0; j < (mat->numVerts); j++) { 
-        if ( (mat->M_prev[k][j])==1 && ( (mat->M_prev[i][k])==1 || (mat->M_prev[i][j])==1 ) ) 
-          (mat->M_curr[i][j]) = 1;
-			} 
+      if (mat->M_prev[i][k] == 1 ) {
+			 for(j = 0; j < (mat->numVerts); j++) { 
+        if (mat->M_prev[k][j] == 1) {
+          mat->M_prev[i][j] = 1;
+          mat->M_curr[i][j] = 1;
+        }
+			 } 
+     }
 		}
     pthread_mutex_unlock(&(mat->p2c[t])); // done with operation, unlocks
 	}
@@ -64,6 +68,7 @@ int wtc_thr(int nThr, int nVerts, int** matrix) {
 
   int m,y,z; // m represents k-iterations
   for (m=0; m<nVerts;m++) {
+      pthread_mutex_lock(&c2p[k]);
     // moving to the next iteration; releasing mutex
   	for (k=0; k<nThr; k++) {
   		
@@ -73,13 +78,13 @@ int wtc_thr(int nThr, int nVerts, int** matrix) {
       //pthread_mutex_unlock(&c2p[k]);
   	}
   	for(y=0; y<nVerts; y++) {
-    // pthread_mutex_lock(&p2c[k]);
+  
   		for(z=0;z<nVerts;z++) {
   			 (matsrc->M_prev[y][z])=(matsrc->M_curr[y][z]);
   		}
-    // pthread_mutex_unlock(&p2c[k]);
+    
   	}
-
+pthread_mutex_unlock(&c2p[k]);
   }
   
 // Joining pthreads and destroying the mutexes below:
@@ -100,6 +105,8 @@ int wtc_thr(int nThr, int nVerts, int** matrix) {
       elapsedTime);
   printf("microseconds \n");
   pthread_exit(NULL);
+  free(c2p);
+  free(p2c);
 }
 
   //Copy original matrix to shared memory, which has it represented
