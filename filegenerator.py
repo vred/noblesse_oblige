@@ -6,9 +6,9 @@ def createFile( p, n, amount ):
   f.write(p+'\n')
   f.write(n+'\n')
   for i in range(int(amount)):
-  	string = str(random.randint(0,int(n)))
+  	string = str(random.randint(1,int(n)))
   	string += " "
-  	string += str(random.randint(0,int(n)))
+  	string += str(random.randint(1,int(n)))
   	string += '\n'
   	f.write(string)
   f.close()
