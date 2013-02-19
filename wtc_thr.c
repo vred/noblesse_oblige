@@ -23,11 +23,8 @@ void *Thr(void *thrargs) {
           (mat->M_curr[i][j]) = 1;
 			} 
 		}
-		printf("thread %d is unlocking its mutex for iteration %d\n",mat->tid,k);
     pthread_mutex_unlock(&(mat->c2p[t])); // done with operation, unlocks
 	}
-		printf("thread %d is done\n",mat->tid);
-		pthread_mutex_unlock(&(mat->c2p[t]));
 	pthread_exit (NULL) ;
 }
 
@@ -71,7 +68,6 @@ int wtc_thr(int nThr, int nVerts, int** matrix) {
 	for(k=0;k<nThr;k++){pthread_mutex_unlock(&p2c[k]);}
     
     for(k=0;k<nThr;k++){
-		printf("parent waiting on thread %d for iteration %d\n",k,m);
 		pthread_mutex_lock(&c2p[k]);
 		
 	}
