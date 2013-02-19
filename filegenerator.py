@@ -6,11 +6,12 @@ def createFile( p, n, amount ):
   f.write(p+'\n')
   f.write(n+'\n')
   for i in range(int(amount)):
-  	string = str(random.randint(1,int(n)))
-  	string += " "
-  	string += str(random.randint(1,int(n)))
-  	string += '\n'
-  	f.write(string)
+  	if i != int(amount)/2:
+  		string = str(i+1)
+  		string += " "
+  		string += str(i+2)
+  		string += '\n'
+  		f.write(string)
   f.close()
   
 if __name__ == "__main__":
