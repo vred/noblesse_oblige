@@ -13,7 +13,7 @@ struct pt_mat {
 void *Thr(void *thrargs) {
 	struct pt_mat *mat; // mat contains all passed arguments 
 	mat = (struct pt_mat *)thrargs;
-  int t = (mat->tid);
+	int t = (mat->tid);
 	int i,j,k;
 	for(k=0; k<(mat->numVerts); k++) {
 		pthread_mutex_lock( &(mat->p2c[t]) ); // locks child to parent
@@ -23,8 +23,11 @@ void *Thr(void *thrargs) {
           (mat->M_curr[i][j]) = 1;
 			} 
 		}
-    pthread_mutex_unlock(&(mat->p2c[t])); // done with operation, unlocks
+		printf("thread %d is unlocking its mutex for iteration %d\n",mat->tid,k);
+    pthread_mutex_unlock(&(mat->c2p[t])); // done with operation, unlocks
 	}
+		printf("thread %d is done\n",mat->tid);
+		pthread_mutex_unlock(&(mat->c2p[t]));
 	pthread_exit (NULL) ;
 }
 
@@ -34,15 +37,16 @@ int wtc_thr(int nThr, int nVerts, int** matrix) {
 
   	pthread_t thra[nThr]; // initialzies number of threads based on input argument.
   	struct pt_mat matsrc[nThr];
-    pthread_mutex_t * p2c = malloc(sizeof(pthread_mutex_t)*nThr); // parent to child array
-    pthread_mutex_t * c2p = malloc(sizeof(pthread_mutex_t)*nThr);// child to parent array
+    pthread_mutex_t * p2c = (pthread_mutex_t*) malloc(sizeof(pthread_mutex_t)*nThr); // parent to child array
+    pthread_mutex_t * c2p = (pthread_mutex_t*) malloc(sizeof(pthread_mutex_t)*nThr);// child to parent array
 
   int k; // Initializing all the mutexes as follows:
     
   for(k=0; k<nThr; k++) {
     pthread_mutex_init(&p2c[k], NULL);
     pthread_mutex_init(&c2p[k], NULL);
-    
+    pthread_mutex_lock(&p2c[k]);
+    pthread_mutex_lock(&c2p[k]);
   }
   int rc;
   
@@ -64,7 +68,13 @@ int wtc_thr(int nThr, int nVerts, int** matrix) {
 
   int m,y,z; // m represents k-iterations
   for (m=0; m<nVerts;m++) {
-      pthread_mutex_lock(&c2p[k]);
+	for(k=0;k<nThr;k++){pthread_mutex_unlock(&p2c[k]);}
+    
+    for(k=0;k<nThr;k++){
+		printf("parent waiting on thread %d for iteration %d\n",k,m);
+		pthread_mutex_lock(&c2p[k]);
+		
+	}
     // moving to the next iteration; releasing mutex
 
   	for(y=0; y<nVerts; y++) {
@@ -72,7 +82,6 @@ int wtc_thr(int nThr, int nVerts, int** matrix) {
   			 (matsrc->M_prev[y][z])=(matsrc->M_curr[y][z]);
   		}
   	}
-pthread_mutex_unlock(&c2p[k]);
   }
   
 // Joining pthreads and destroying the mutexes below:
