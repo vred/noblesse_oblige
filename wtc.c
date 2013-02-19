@@ -99,7 +99,11 @@ int main(int argc, char** argv){
 	else{
 		//wtc_btthr(A, num_ver, num_pt);
 	}
-
+	for(i=0; i<num_ver; i++){
+		free(A[i]);
+	}
+	free(A);
+	fclose(fp);
 	return 0;
 }
 
