@@ -1,17 +1,22 @@
 import random
 import sys
 
-def createFile( p, n, amount ):
-  f = open('test.in','wb')
+def createFile( path, p, n ):
+  f = open(path,'wb')
   f.write(p+'\n')
   f.write(n+'\n')
-  for i in range(int(amount)):
-  	if i != int(amount)/2:
-  		string = str(i+1)
+  j = 0
+  for i in range(int(n)):
+  	if j%int(n) != (int(n))/2:
+  		string = str(j%int(n)+1)
   		string += " "
-  		string += str(i+2)
+  		if (j+1)%int(n) == 0:
+  			string += str(1)
+  		else:
+  			string += str(j%int(n)+2)
   		string += '\n'
   		f.write(string)
+  	j=j+1
   f.close()
   
 if __name__ == "__main__":
