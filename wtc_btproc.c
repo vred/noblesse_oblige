@@ -16,8 +16,6 @@ int dequeue( int *queue, int *queueSizeAndIteration )
 
 int childProcess(int processNumber, sem_t* p2c, sem_t* c2p, int numVerts, int numProcs, int* M_prev, int* M_curr, int* queue, int *queueSizeAndIteration)
 {
-printf("Hello");
-printf("%i, %i", (queueSizeAndIteration[0]),queueSizeAndIteration[1] );
 	while ((queueSizeAndIteration[0]>0)||(queueSizeAndIteration[1]<=numVerts))
 	{
 		sem_wait(&p2c[processNumber]);
@@ -107,16 +105,18 @@ int wtc_btproc(int numProcs, int numVerts, int** matrix)
       M_prev[i*numVerts+j]=matrix[i][j];
 	
   //Create the desired number of processes
-  int pid;
-  for(k=0; k<numProcs; k++)
-  {
-		pid=fork();
+  for(k=0; k<numProcs; k++){
+	int pid=fork();
 		if(!pid)
-	  	child(k,p2c,c2p,numVerts,numProcs,M_prev,M_curr);
+		{
+			printf("Why aren't my children here???");
+			childProcess(k,p2c,c2p,numVerts,numProcs,M_prev,M_curr,queue,queueSizeAndIteration);
+		}	
 	}
 	
   int y,z;
-  for(queueSizeAndIteration[1]=0; queueSizeAndIteration[1]<numVerts; queueSizeAndIteration[1]++) //Counter for each iteration
+  //Counter for each iteration
+  for(queueSizeAndIteration[1]=0; queueSizeAndIteration[1]<numVerts; queueSizeAndIteration[1]++) 
   {	
   	//Make the processes stop waiting
   	for(k=0; k<numProcs; k++)
