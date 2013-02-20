@@ -18,7 +18,11 @@ int childProcess(int processNumber, sem_t* p2c, sem_t* c2p, int numVerts, int nu
 			
 			//Dequeue
 			if(*queue >= numVerts)
+			{
+				sem_post(queueSem);
 				break;
+			}
+			
 			int row = *queue;
 			*queue+=1;
 			
