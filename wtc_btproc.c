@@ -4,38 +4,37 @@
 //Process for child
 int childProcess(int processNumber, sem_t* p2c, sem_t* c2p, int numVerts, int numProcs, int* M_prev, int* M_curr, int* queue, int* iterator, sem_t* queueSem)
 {
-	//Outer loop which loops at every iteration
-	while ((*queue<numVerts)||(*iterator<numVerts))
-	{
-		sem_wait(&p2c[processNumber]);
-		
-		//Inner loop that allows for children to grab from the queue
-		while(*queue<numVerts)
-		{
-			
-			//Wait for any other process to stop accessing this sensitive data
-			sem_wait(queueSem);
-			
-			//Dequeue
-			int row = *queue;
-			*queue+=1;
-			
-			//Allow other processes to pass the wait stage
-			sem_post(queueSem);
-			
-			//Check if number is useable
-			if(row >= numVerts)
-				break;
-			
+  //Outer loop which loops at every iteration
+  while ((*queue<numVerts)||(*iterator<numVerts))
+  {
+    sem_wait(&p2c[processNumber]);
+
+    //Inner loop that allows for children to grab from the queue
+    while(*queue<numVerts)
+    {
+
+      //Wait for any other process to stop accessing this sensitive data
+      sem_wait(queueSem);
+
+      //Dequeue
+      int row = *queue;
+      *queue+=1;
+
+      //Allow other processes to pass the wait stage
+      sem_post(queueSem);
+
+      //Check if number is useable
+      if(row >= numVerts)
+        break;
+
 			//Funtion that computes row result
-			int j;
-			for (j = 0; j < numVerts; j++)
-				if ( (M_prev[(*iterator)*(numVerts)+j]==1&&M_prev[(row)*(numVerts)+(*iterator)]) || M_prev[(row)*(numVerts)+j]==1 )
-	  			M_curr[row*numVerts+j] = 1;
-	  			
-		}
-		sem_post(&c2p[processNumber]);
-	}
+      int j;
+      for (j = 0; j < numVerts; j++)
+        if ( (M_prev[(*iterator)*(numVerts)+j]==1&&M_prev[(row)*(numVerts)+(*iterator)]) || M_prev[(row)*(numVerts)+j]==1 )
+          M_curr[row*numVerts+j] = 1;
+    }
+    sem_post(&c2p[processNumber]);
+  }
   exit(0);
 }
 
@@ -75,7 +74,7 @@ int wtc_btproc(int numProcs, int numVerts, int** matrix)
   int fd4=shm_open(mp_name, O_RDWR | O_CREAT | O_TRUNC, 0666);
   int fd5=shm_open(q_name, O_RDWR | O_CREAT | O_TRUNC, 0666);
   int fd6=shm_open(i_name, O_RDWR | O_CREAT | O_TRUNC, 0666);
-	int fd7=shm_open(qs_name, O_RDWR | O_CREAT | O_TRUNC, 0666);
+  int fd7=shm_open(qs_name, O_RDWR | O_CREAT | O_TRUNC, 0666);
 
   //make the memory file the right size
   ftruncate(fd1,size1*2); 
@@ -101,15 +100,15 @@ int wtc_btproc(int numProcs, int numVerts, int** matrix)
   {
     if(sem_init(&p2c[k], 1, 0)==-1||sem_init(&c2p[k], 1, 0)==-1)
       {
-				fprintf(stderr,"sem_init failed\n");
-				exit(1);
+        fprintf(stderr,"sem_init failed\n");
+        exit(1);
       }
   }
   
   if(sem_init(queueSem, 1, 1)==-1)
  	{
-		fprintf(stderr,"sem_init failed\n");
-		exit(1);
+    fprintf(stderr,"sem_init failed\n");
+    exit(1);
   }
   
   //Initialize queue and iterator
@@ -125,21 +124,21 @@ int wtc_btproc(int numProcs, int numVerts, int** matrix)
   //Create the desired number of processes
   int pid;
   for(k=0; k<numProcs; k++){
-	pid=fork();
-		if(!pid)
-			childProcess(k,p2c,c2p,numVerts,numProcs,M_prev,M_curr,queue, iterator, queueSem);
-	}
+  pid=fork();
+    if(!pid)
+      childProcess(k,p2c,c2p,numVerts,numProcs,M_prev,M_curr,queue, iterator, queueSem);
+  }
 	
   int y,z;
   //Counter for each iteration
   for(; *iterator<numVerts; *iterator+=1) 
   {	
 		//reset queue
-  	*queue = 0;
+    *queue = 0;
 
   	//Make the processes stop waiting
-  	for(k=0; k<numProcs; k++)
-			sem_post(&p2c[k]);
+    for(k=0; k<numProcs; k++)
+      sem_post(&p2c[k]);
   		
     //Waits for all children to finish the processes
     for(k=0; k<numProcs; k++)
@@ -148,7 +147,7 @@ int wtc_btproc(int numProcs, int numVerts, int** matrix)
 		//Moves the current matrix into the previous one
     for(y=0; y<numVerts; y++)
       for(z=0; z<numVerts; z++)
-				M_prev[y*numVerts+z]=M_curr[y*numVerts+z];
+        M_prev[y*numVerts+z]=M_curr[y*numVerts+z];
   }
 	
   //Destroy all semaphores
