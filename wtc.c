@@ -3,7 +3,6 @@
 #include "wtc_btproc.c"
 #include "wtc_thr.c"
 #include "wtc_btthr.c"
-#include "wtc_btproc.c"
 //Print out a matrix to stdout
 int printMatrix(int** M, int n){
 
