@@ -1,6 +1,8 @@
 #include "wtc.h"
 #include "wtc_proc.c"
 #include "wtc_thr.c"
+#include "wtc_btthr.c"
+#include "wtc_btproc.c"
 //Print out a matrix to stdout
 int printMatrix(int** M, int n){
 
@@ -93,11 +95,11 @@ int main(int argc, char** argv){
 	}
 	//i.e. Calculate with processes, using bag of tasks algorithm
 	else if(choice==3){
-		//wtc_btproc(A, num_ver, num_pt);
+		wtc_btproc(num_pt, num_ver, A);
 	}
 	//i.e. Calculate with threads, using bag of tasks algorithm
 	else{
-		//wtc_btthr(A, num_ver, num_pt);
+		wtc_btthr(num_pt, num_ver, A);
 	}
 	for(i=0; i<num_ver; i++){
 		free(A[i]);
