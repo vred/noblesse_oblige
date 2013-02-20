@@ -17,23 +17,22 @@ int childProcess(int processNumber, sem_t* p2c, sem_t* c2p, int numVerts, int nu
 			sem_wait(queueSem);
 			
 			//Dequeue
-			if(*queue >= numVerts)
-			{
-				sem_post(queueSem);
-				break;
-			}
-			
 			int row = *queue;
 			*queue+=1;
 			
 			//Allow other processes to pass the wait stage
 			sem_post(queueSem);
-
-			//Funtion that computes row
+			
+			//Check if number is useable
+			if(row >= numVerts)
+				break;
+			
+			//Funtion that computes row result
 			int j;
 			for (j = 0; j < numVerts; j++)
 				if ( (M_prev[(*iterator)*(numVerts)+j]==1&&M_prev[(row)*(numVerts)+(*iterator)]) || M_prev[(row)*(numVerts)+j]==1 )
 	  			M_curr[row*numVerts+j] = 1;
+	  			
 		}
 		sem_post(&c2p[processNumber]);
 	}
@@ -178,6 +177,8 @@ int wtc_btproc(int numProcs, int numVerts, int** matrix)
   shm_unlink(q_name);
   close(fd6);
   shm_unlink(i_name);
+  close(fd6);
+  shm_unlink(qs_name);
   
   gettimeofday(&endt, NULL);
   int elapsedTime;
