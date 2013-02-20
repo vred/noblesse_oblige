@@ -18,24 +18,25 @@
 Eric Cuiffo, Nick Palumbo, Val A. Red, Aiser Sheikh\\
 20 February 2013 \\
 198:416 Operating Systems, A01. \\
- Parallel transitive closure of a directed graph
+{\bfseries Parallel transitive closure of a directed graph}
 
 \section{Introduction}
 
-Our group, Eric Cuiffo, Nick Palumbo, Val A. Red, and Aiser Sheikh, examined parallel transitive closure of a directed graph via Warshall’s algorithm utilizing implementations of multiprocessing via shared memory and semaphores as well as multithreading via POSIX pthread and mutex locks. Our code, also included in this directory, may be made via the ``make'' command and similarly removed via the ``make clean'' command. Possible executions of our ``wtc'' command our as follows: \\ \\
+Our group, Eric Cuiffo, Nick Palumbo, Val A. Red, and Aiser Sheikh, examined parallel transitive closure of a directed graph via Warshall’s algorithm utilizing implementations of multiprocessing via shared memory and semaphores as well as multithreading via POSIX pthread and mutex locks. Our code, also included in this directory, may be made via the ``make'' command and similarly removed via the ``make clean'' command. \\
+\hspace*{36pt} Possible executions of our ``wtc'' command our as follows: \\ \\
 {\bfseries Process-level concurrency} 
 \begin{verbatim}
 ./wtc 1 input.in
 \end{verbatim}
-{\bfseries Thread-level concurrency} \\
+{\bfseries Thread-level concurrency} 
 \begin{verbatim}
 ./wtc 2 input.in
 \end{verbatim}
-{\bfseries Process-level concurrency - Bag of tasks} \\
+{\bfseries Process-level concurrency - Bag of tasks} 
 \begin{verbatim}
 ./wtc 3 input.in
 \end{verbatim}
-{\bfseries Thread-level concurrency - Bag of tasks} \\
+{\bfseries Thread-level concurrency - Bag of tasks} 
 \begin{verbatim}
 ./wtc 4 input.in
 \end{verbatim}
