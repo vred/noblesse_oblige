@@ -1,5 +1,6 @@
 #include "wtc.h"
 #include "wtc_proc.c"
+#include "wtc_btproc.c"
 #include "wtc_thr.c"
 #include "wtc_btthr.c"
 #include "wtc_btproc.c"
