@@ -1,0 +1,60 @@
+\documentclass[10pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{calc}
+\pagestyle{fancy}
+\fancyhf{}
+\setcounter{secnumdepth}{-1}
+
+\begin{document}
+
+\title{198:416 A01}
+\author{Eric Cuiffo, Nick Palumbo, Val A. Red, Aiser Sheikh}
+
+\fancyhead{}
+\fancyhead[LO]{\bfseries Eric Cuiffo, Nick Palumbo, Val A. Red, Aiser Sheikh}
+\fancyhead[RO]{198:416 A01}
+.\\
+Eric Cuiffo, Nick Palumbo, Val A. Red, Aiser Sheikh\\
+20 February 2013 \\
+198:416 Operating Systems, A01. \\
+ Parallel transitive closure of a directed graph
+
+\section{Introduction}
+
+Our group, Eric Cuiffo, Nick Palumbo, Val A. Red, and Aiser Sheikh, examined parallel transitive closure of a directed graph via Warshall’s algorithm utilizing implementations of multiprocessing via shared memory and semaphores as well as multithreading via POSIX pthread and mutex locks. Our code, also included in this directory, may be made via the ``make'' command and similarly removed via the ``make clean'' command. Possible executions of our ``wtc'' command our as follows: \\ \\
+{\bfseries Process-level concurrency} 
+\begin{verbatim}
+./wtc 1 input.in
+\end{verbatim}
+{\bfseries Thread-level concurrency} \\
+\begin{verbatim}
+./wtc 2 input.in
+\end{verbatim}
+{\bfseries Process-level concurrency - Bag of tasks} \\
+\begin{verbatim}
+./wtc 3 input.in
+\end{verbatim}
+{\bfseries Thread-level concurrency - Bag of tasks} \\
+\begin{verbatim}
+./wtc 4 input.in
+\end{verbatim}
+
+Data gathered from our implementation will be discussed in this report.
+
+\section{Time Measurement Graphs:}
+
+Recommended format: \\
+Vertices Size: 32, 64, 96, 128, 168, 192, 224, 256, 288, 329, 352, 384, 416, 448, 480, 512, ... 1024  \\
+Process/Thread Size:
+2, 
+8,
+32,
+128,
+512,
+
+Remember to less /proc/cpuinfo
+
+To be continued...
+
+\end{document}
