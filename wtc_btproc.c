@@ -1,27 +1,29 @@
 #include "wtc.h"
 
-void enqueue( int row, int *queue, int *queueSize )
+void enqueue( int row, int *queue, int *queueSizeAndIteration )
 {
-	queue[&queueSize] = row;
-	&queueSize++;
+	queue[queueSizeAndIteration[0]] = row;
+	queueSizeAndIteration[0]++;
 }
 
-int dequeue( int *queue, int *queueSize )
+int dequeue( int *queue, int *queueSizeAndIteration )
 {
-	&queueSize--;
-	return queue[&queueSize];
+	queueSizeAndIteration[0]--;
+	return queue[queueSizeAndIteration[0]];
 }
 
 //Process for child
-int child(int processNumber, sem_t* p2c, sem_t* c2p, int numVerts, int numProcs, int* M_prev, int* M_curr, int* queue, int *queueSize, int *iteration)
+
+int childProcess(int processNumber, sem_t* p2c, sem_t* c2p, int numVerts, int numProcs, int* M_prev, int* M_curr, int* queue, int *queueSizeAndIteration)
 {
-	while ((queueSize>0)||(&iteration<=numVerts))
+	while ((queueSizeAndIteration[0]>0)||(queueSizeAndIteration[1]<=numVerts))
 	{
 		sem_wait(&p2c[processNumber]);
-		int row = dequeue(queue,queueSize);
+		int row = dequeue(queue,queueSizeAndIteration);
+		int j;
 		for (j = 0; j < numVerts; j++)
-			if ( (M_prev[&iteration*numVerts+j]==1&&M_prev[row*numVerts+&iteration]) || M_prev[row*numVerts+j]==1 )
-	  		M_curr[i*numVerts+j] = 1;
+			if ( (M_prev[(queueSizeAndIteration[1])*(numVerts)+j]==1&&M_prev[(row)*(numVerts)+(queueSizeAndIteration[1])]) || M_prev[(row)*(numVerts)+j]==1 )
+	  		M_curr[row*numVerts+j] = 1;
 		sem_post(&c2p[processNumber]);
 	}
   exit(0);
@@ -38,14 +40,13 @@ int wtc_btproc(int numProcs, int numVerts, int** matrix)
   int* M_prev = NULL; //matrixes
   int* M_curr = NULL;
   int* queue = NULL;
-  int* queueSize = NULL;
-  int* iteration = NULL;
+  int* queueSizeAndIteration = NULL;
   
   //Calculate sizes of both
   int size1 = sizeof(sem_t)*numProcs;
   int size2 = sizeof(int)*numVerts*numVerts;
   int size3 = sizeof(int)*numVerts;
-  int size4 = sizeof(int);
+  int size4 = sizeof(int)*2;
   
   //IDs for shared memory
   char* p2c_name = "/shared_sems"; //semaphore for process to alert children
@@ -53,8 +54,7 @@ int wtc_btproc(int numProcs, int numVerts, int** matrix)
   char* mc_name = "/shared_curr";
   char* mp_name = "/shared_prev";
   char* q_name = "/shared_queue";
-  char* qs_name = "/shared_queueSize";
-  char* i_name = "/shared_iteration";
+  char* qsai_name = "/shared_queueSizeAndIteration";
   
   //Create shared memory file and assign pointers
   int fd1=shm_open(p2c_name, O_RDWR | O_CREAT | O_TRUNC, 0666);
@@ -62,8 +62,8 @@ int wtc_btproc(int numProcs, int numVerts, int** matrix)
   int fd3=shm_open(mc_name, O_RDWR | O_CREAT | O_TRUNC, 0666);
   int fd4=shm_open(mp_name, O_RDWR | O_CREAT | O_TRUNC, 0666);
   int fd5=shm_open(q_name, O_RDWR | O_CREAT | O_TRUNC, 0666);
-  int fd6=shm_open(qs_name, O_RDWR | O_CREAT | O_TRUNC, 0666);
-  int fd7=shm_open(i_name, O_RDWR | O_CREAT | O_TRUNC, 0666);
+  int fd6=shm_open(qsai_name, O_RDWR | O_CREAT | O_TRUNC, 0666);
+
 
   //make the memory file the right size
   ftruncate(fd1,size1*2); 
@@ -72,7 +72,7 @@ int wtc_btproc(int numProcs, int numVerts, int** matrix)
   ftruncate(fd4,size2*2);
   ftruncate(fd5,size3*2);
   ftruncate(fd6,size4*2);
-  ftruncate(fd7,size4*2);
+
   
   //Map files to memory
   p2c = (sem_t*)mmap(0,size1*2,PROT_READ | PROT_WRITE, MAP_SHARED, fd1, 0);
@@ -80,8 +80,8 @@ int wtc_btproc(int numProcs, int numVerts, int** matrix)
   M_curr = (int*)mmap(0,size2*2,PROT_READ | PROT_WRITE, MAP_SHARED, fd3, 0);
   M_prev = (int*)mmap(0,size2*2,PROT_READ | PROT_WRITE, MAP_SHARED, fd4, 0);
   queue = (int*)mmap(0,size3*2,PROT_READ | PROT_WRITE, MAP_SHARED, fd5, 0);
-  queueSize = (int*)mmap(0,size4*2,PROT_READ | PROT_WRITE, MAP_SHARED, fd6, 0);
-  iteration = (int*)mmap(0,size4*2,PROT_READ | PROT_WRITE, MAP_SHARED, fd7, 0);
+  queueSizeAndIteration = (int*)mmap(0,size4*2,PROT_READ | PROT_WRITE, MAP_SHARED, fd6, 0);
+
 	
   //Initialize all semaphores
   int k;
@@ -95,8 +95,8 @@ int wtc_btproc(int numProcs, int numVerts, int** matrix)
   }
   
   //Initialize pass iterator and queueSize
-  &iteration = 0;
-  &queueSize = 0;
+  queueSizeAndIteration[0] = 0;
+  queueSizeAndIteration[1] = 0;
 
   //Copy original matrix to shared memory, and initialize queue
   int i, j;
@@ -111,12 +111,12 @@ int wtc_btproc(int numProcs, int numVerts, int** matrix)
   {
     pid=fork();
     if( !pid ) //i.e. I'm in the child
-      child(k,p2c,c2p,numVerts,numProcs,M_prev,M_curr, queue, queueSize, iteration);
+      childProcess(k,p2c,c2p,numVerts,numProcs,M_prev,M_curr, queue, queueSizeAndIteration);
     //Else I'm still in the parent
   }
 	
-  int m,y,z;
-  for(&iteration=0; &iteration<numVerts; m++) //Counter for each iteration
+  int y,z;
+  for(queueSizeAndIteration[1]=0; queueSizeAndIteration[1]<numVerts; queueSizeAndIteration[1]++) //Counter for each iteration
   {	
  		
   	//Make the processes stop waiting
@@ -125,7 +125,7 @@ int wtc_btproc(int numProcs, int numVerts, int** matrix)
   	
   	//Pushes all tasks into queue
   	for(i=0; i<numVerts; i++)
-  		enqueue(i,queue,queueSize);
+  		enqueue(i,queue,queueSizeAndIteration);
   		
     //Waits for all children to finish the processes
     for(k=0; k<numProcs; k++)
@@ -145,6 +145,7 @@ int wtc_btproc(int numProcs, int numVerts, int** matrix)
     }
   }
   
+  //Print result
   printf("Output:\n");
   printArrayMatrix(M_curr,numVerts);
   
@@ -160,9 +161,8 @@ int wtc_btproc(int numProcs, int numVerts, int** matrix)
   close(fd5);
   shm_unlink(q_name);
   close(fd6);
-  shm_unlink(qs_name);
-  close(fd7);
-  shm_unlink(i_name);
+  shm_unlink(qsai_name);
+  
   gettimeofday(&endt, NULL);
   int elapsedTime;
   elapsedTime = (endt.tv_usec - startt.tv_usec);
