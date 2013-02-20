@@ -29,9 +29,10 @@ void *Thr(void *thrargs) {
 }
 
 int wtc_thr(int nThr, int nVerts, int** matrix) {
-  struct timeval startt, endt;
+  struct timeval startt, endt; // setting timer 
   gettimeofday(&startt, NULL );
 
+// allocating memory as follows: 
   pthread_t* thra = (pthread_t*)malloc(sizeof(pthread_t)*nThr); // initialzies number of threads based on input argument.
   int i,j;
   pt_mat** matsrc = (pt_mat**)malloc(sizeof(pt_mat*)*nThr);
@@ -94,10 +95,6 @@ int wtc_thr(int nThr, int nVerts, int** matrix) {
   // Joining pthreads and destroying the mutexes below:
   for (k=0; k<nThr; k++) {
     pthread_join( thra[k], NULL );
-    /*
-    pthread_mutex_destroy( (matsrc[k]->p2c));
-    pthread_mutex_destroy( (matsrc[k]->c2p));
-    */
     pthread_mutex_destroy(&p2c[k]);
     pthread_mutex_destroy(&c2p[k]);
 
@@ -119,7 +116,7 @@ int wtc_thr(int nThr, int nVerts, int** matrix) {
   printMatrix(matrix, nVerts);
   // printArrayMatrix(printmat,numVerts);
   gettimeofday(&endt, NULL);
-  int elapsedTime;
+  int elapsedTime; // Finding the elapsed time. 
   elapsedTime = (endt.tv_usec - startt.tv_usec);
   printf("time = %u ",
       elapsedTime);
@@ -128,5 +125,3 @@ int wtc_thr(int nThr, int nVerts, int** matrix) {
 
 }
 
-//Copy original matrix to shared memory, which has it represented
-//as a 1-dimensional array d
