@@ -106,7 +106,7 @@ int wtc_btproc(int numProcs, int numVerts, int** matrix)
       }
   }
   
-  if(sem_init(queueSem, 1, 0)==-1)
+  if(sem_init(queueSem, 1, 1)==-1)
  	{
 		fprintf(stderr,"sem_init failed\n");
 		exit(1);
@@ -138,7 +138,6 @@ int wtc_btproc(int numProcs, int numVerts, int** matrix)
   	*queue = 0;
 
   	//Make the processes stop waiting
-  	sem_post(queueSem);
   	for(k=0; k<numProcs; k++)
 			sem_post(&p2c[k]);
   		
