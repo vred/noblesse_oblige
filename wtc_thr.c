@@ -29,10 +29,10 @@ void *Thr(void *thrargs) {
 }
 
 int wtc_thr(int nThr, int nVerts, int** matrix) {
-  struct timeval startt, endt; // setting timer 
+  struct timeval startt, endt; // setting timer
   gettimeofday(&startt, NULL );
 
-// allocating memory as follows: 
+  // allocating memory as follows:
   pthread_t* thra = (pthread_t*)malloc(sizeof(pthread_t)*nThr); // initialzies number of threads based on input argument.
   int i,j;
   pt_mat** matsrc = (pt_mat**)malloc(sizeof(pt_mat*)*nThr);
@@ -112,14 +112,14 @@ int wtc_thr(int nThr, int nVerts, int** matrix) {
   }
   free(cmatrix);
 
-  //printf("Output:\n");
-  //printMatrix(matrix, nVerts);
-  // printArrayMatrix(printmat,numVerts);
+  printf("Output:\n");
+  printMatrix(matrix, nVerts);
+  //printArrayMatrix(printmat,numVerts);
   gettimeofday(&endt, NULL);
-  int elapsedTime; // Finding the elapsed time. 
+  int elapsedTime; // Finding the elapsed time.
   elapsedTime = (endt.tv_usec - startt.tv_usec);
   //printf("%u,",
-    //  elapsedTime);
+  //  elapsedTime);
   //printf("microseconds \n");
   return 0;
 

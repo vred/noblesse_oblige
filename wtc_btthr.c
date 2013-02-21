@@ -114,7 +114,7 @@ int wtc_btthr(int numThr, int numVerts, int** matrix) {
   }
 
   for (y = 0; y < numThr; y++)
-      pthread_mutex_unlock(&p2c[y]);
+    pthread_mutex_unlock(&p2c[y]);
 
   //Join the threads and destroy mutexes
   for (k = 0; k < numThr; k++){
@@ -135,8 +135,8 @@ int wtc_btthr(int numThr, int numVerts, int** matrix) {
   }
   free(cmatrix);
 
-  //printf("Output:\n");
-  //printMatrix(matrix, numVerts);
+  printf("Output:\n");
+  printMatrix(matrix, numVerts);
   gettimeofday(&endt, NULL);
   int elapsedTime;
   elapsedTime = (endt.tv_usec - startt.tv_usec);
