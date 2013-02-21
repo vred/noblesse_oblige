@@ -129,8 +129,8 @@ int wtc_proc(int numProcs, int numVerts, int** matrix) {
   gettimeofday(&endt, NULL);
 	int elapsedTime;
 	elapsedTime = (endt.tv_usec - startt.tv_usec);
-	printf("%u,", 
-			elapsedTime);
+	//printf("%u,", 
+			//elapsedTime);
 	//printf("microseconds \n");
   return 0;
 }

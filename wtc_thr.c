@@ -118,8 +118,8 @@ int wtc_thr(int nThr, int nVerts, int** matrix) {
   gettimeofday(&endt, NULL);
   int elapsedTime; // Finding the elapsed time. 
   elapsedTime = (endt.tv_usec - startt.tv_usec);
-  printf("%u,",
-      elapsedTime);
+  //printf("%u,",
+    //  elapsedTime);
   //printf("microseconds \n");
   return 0;
 
