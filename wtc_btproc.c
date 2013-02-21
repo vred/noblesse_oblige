@@ -175,7 +175,7 @@ int wtc_btproc(int numProcs, int numVerts, int** matrix)
   shm_unlink(q_name);
   close(fd6);
   shm_unlink(i_name);
-  close(fd6);
+  close(fd7);
   shm_unlink(qs_name);
   
   gettimeofday(&endt, NULL);
