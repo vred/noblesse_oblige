@@ -114,8 +114,8 @@ int wtc_proc(int numProcs, int numVerts, int** matrix) {
 	  }
   }
   
-  printf("Output:\n");
-  printArrayMatrix(M_curr,numVerts);
+  //printf("Output:\n");
+  //printArrayMatrix(M_curr,numVerts);
   
   //Remove the shared memory
   close(fd1);
@@ -129,9 +129,9 @@ int wtc_proc(int numProcs, int numVerts, int** matrix) {
   gettimeofday(&endt, NULL);
 	int elapsedTime;
 	elapsedTime = (endt.tv_usec - startt.tv_usec);
-	printf("time = %u ", 
+	printf("%u,", 
 			elapsedTime);
-	printf("microseconds \n");
+	//printf("microseconds \n");
   return 0;
 }
 

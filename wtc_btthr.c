@@ -135,11 +135,11 @@ int wtc_btthr(int numThr, int numVerts, int** matrix) {
   }
   free(cmatrix);
 
-  printf("Output:\n");
-  printMatrix(matrix, numVerts);
+  //printf("Output:\n");
+  //printMatrix(matrix, numVerts);
   gettimeofday(&endt, NULL);
   int elapsedTime;
   elapsedTime = (endt.tv_usec - startt.tv_usec);
-  printf("time = %u microseconds\n", elapsedTime);
+  printf("%u,", elapsedTime);
   return 0;
 }

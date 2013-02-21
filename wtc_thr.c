@@ -112,15 +112,15 @@ int wtc_thr(int nThr, int nVerts, int** matrix) {
   }
   free(cmatrix);
 
-  printf("Output:\n");
-  printMatrix(matrix, nVerts);
+  //printf("Output:\n");
+  //printMatrix(matrix, nVerts);
   // printArrayMatrix(printmat,numVerts);
   gettimeofday(&endt, NULL);
   int elapsedTime; // Finding the elapsed time. 
   elapsedTime = (endt.tv_usec - startt.tv_usec);
-  printf("time = %u ",
+  printf("%u,",
       elapsedTime);
-  printf("microseconds \n");
+  //printf("microseconds \n");
   return 0;
 
 }

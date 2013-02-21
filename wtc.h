@@ -15,3 +15,19 @@
 
 int printMatrix(int** M, int n);
 int printArrayMatrix(int* M, int n);
+
+//proc functions
+int child(int n, sem_t* p2c, sem_t* c2p, int numVerts, int numProcs, int* M_prev, int* M_curr);
+int wtc_proc(int numProcs, int numVerts, int** matrix);
+
+//thr functions
+void *Thr(void *thrargs);
+int wtc_thr(int nThr, int nVerts, int** matrix);
+
+//btproc functions
+int childProcess(int processNumber, sem_t* p2c, sem_t* c2p, int numVerts, int numProcs, int* M_prev, int* M_curr, int* queue, int* iterator, sem_t* queueSem);
+int wtc_btproc(int numProcs, int numVerts, int** matrix);
+
+//btthr functions
+void *thread(void *thrargs);
+int wtc_btthr(int numThr, int numVerts, int** matrix);
