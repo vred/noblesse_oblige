@@ -1,0 +1,1347 @@
+Only in linux-2.4.24_WORKING/arch/i386/boot: bbootsect
+Only in linux-2.4.24_WORKING/arch/i386/boot: bbootsect.o
+Only in linux-2.4.24_WORKING/arch/i386/boot: bbootsect.s
+Only in linux-2.4.24_WORKING/arch/i386/boot: bsetup
+Only in linux-2.4.24_WORKING/arch/i386/boot: bsetup.o
+Only in linux-2.4.24_WORKING/arch/i386/boot: bsetup.s
+Only in linux-2.4.24_WORKING/arch/i386/boot: bzImage
+Only in linux-2.4.24_WORKING/arch/i386/boot/compressed: bvmlinux
+Only in linux-2.4.24_WORKING/arch/i386/boot/compressed: bvmlinux.out
+Only in linux-2.4.24_WORKING/arch/i386/boot/compressed: head.o
+Only in linux-2.4.24_WORKING/arch/i386/boot/compressed: misc.o
+Only in linux-2.4.24_WORKING/arch/i386/boot/compressed: piggy.o
+Only in linux-2.4.24_WORKING/arch/i386/boot/tools: build
+Only in linux-2.4.24_WORKING/arch/i386/kernel: acpi.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .acpi.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: apic.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .apic.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: bluesmoke.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .bluesmoke.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .depend
+Only in linux-2.4.24_WORKING/arch/i386/kernel: dmi_scan.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .dmi_scan.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: entry.o
+diff -crB linux-2.4.24/arch/i386/kernel/entry.S linux-2.4.24_WORKING/arch/i386/kernel/entry.S
+*** linux-2.4.24/arch/i386/kernel/entry.S	2003-06-13 10:51:29.000000000 -0400
+--- linux-2.4.24_WORKING/arch/i386/kernel/entry.S	2013-03-25 21:38:10.000000000 -0400
+***************
+*** 663,669 ****
+  	.long SYMBOL_NAME(sys_ni_syscall)	/* sys_epoll_wait */
+   	.long SYMBOL_NAME(sys_ni_syscall)	/* sys_remap_file_pages */
+   	.long SYMBOL_NAME(sys_ni_syscall)	/* sys_set_tid_address */
+! 
+  	.rept NR_syscalls-(.-sys_call_table)/4
+  		.long SYMBOL_NAME(sys_ni_syscall)
+  	.endr
+--- 663,669 ----
+  	.long SYMBOL_NAME(sys_ni_syscall)	/* sys_epoll_wait */
+   	.long SYMBOL_NAME(sys_ni_syscall)	/* sys_remap_file_pages */
+   	.long SYMBOL_NAME(sys_ni_syscall)	/* sys_set_tid_address */
+! 	.long SYMBOL_NAME(sys_incshare)		/* 259 INCREASED SHARE */
+  	.rept NR_syscalls-(.-sys_call_table)/4
+  		.long SYMBOL_NAME(sys_ni_syscall)
+  	.endr
+Only in linux-2.4.24_WORKING/arch/i386/kernel: head.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: i386_ksyms.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .i386_ksyms.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: i387.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .i387.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: i8259.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .i8259.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: init_task.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .init_task.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: io_apic.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .io_apic.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: ioport.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .ioport.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: irq.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .irq.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: kernel.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .kernel.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: ldt.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .ldt.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: mpparse.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .mpparse.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: nmi.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .nmi.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: pci-dma.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .pci-dma.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: pci-i386.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .pci-i386.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: pci-irq.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .pci-irq.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: pci-pc.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .pci-pc.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: process.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .process.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: ptrace.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .ptrace.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: semaphore.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .semaphore.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: setup.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .setup.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: signal.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .signal.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: smpboot.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .smpboot.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: smp.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .smp.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: sys_i386.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .sys_i386.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: time.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .time.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: trampoline.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: traps.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .traps.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/kernel: vm86.o
+Only in linux-2.4.24_WORKING/arch/i386/kernel: .vm86.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/lib: checksum.o
+Only in linux-2.4.24_WORKING/arch/i386/lib: dec_and_lock.o
+Only in linux-2.4.24_WORKING/arch/i386/lib: .dec_and_lock.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/lib: delay.o
+Only in linux-2.4.24_WORKING/arch/i386/lib: .delay.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/lib: .depend
+Only in linux-2.4.24_WORKING/arch/i386/lib: getuser.o
+Only in linux-2.4.24_WORKING/arch/i386/lib: lib.a
+Only in linux-2.4.24_WORKING/arch/i386/lib: .lib.a.flags
+Only in linux-2.4.24_WORKING/arch/i386/lib: memcpy.o
+Only in linux-2.4.24_WORKING/arch/i386/lib: .memcpy.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/lib: old-checksum.o
+Only in linux-2.4.24_WORKING/arch/i386/lib: .old-checksum.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/lib: strstr.o
+Only in linux-2.4.24_WORKING/arch/i386/lib: .strstr.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/lib: usercopy.o
+Only in linux-2.4.24_WORKING/arch/i386/lib: .usercopy.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/mm: .depend
+Only in linux-2.4.24_WORKING/arch/i386/mm: extable.o
+Only in linux-2.4.24_WORKING/arch/i386/mm: .extable.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/mm: fault.o
+Only in linux-2.4.24_WORKING/arch/i386/mm: .fault.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/mm: init.o
+Only in linux-2.4.24_WORKING/arch/i386/mm: .init.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/mm: ioremap.o
+Only in linux-2.4.24_WORKING/arch/i386/mm: .ioremap.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/mm: mm.o
+Only in linux-2.4.24_WORKING/arch/i386/mm: .mm.o.flags
+Only in linux-2.4.24_WORKING/arch/i386/mm: pageattr.o
+Only in linux-2.4.24_WORKING/arch/i386/mm: .pageattr.o.flags
+Only in linux-2.4.24_WORKING: .config
+Only in linux-2.4.24_WORKING/crypto: crypto.o
+Only in linux-2.4.24_WORKING/crypto: .crypto.o.flags
+Only in linux-2.4.24_WORKING/crypto: .depend
+Only in linux-2.4.24_WORKING: .depend
+Only in linux-2.4.24_WORKING/drivers/acorn/scsi: .depend
+Only in linux-2.4.24_WORKING/drivers/acpi: acpi.o
+Only in linux-2.4.24_WORKING/drivers/acpi: .acpi.o.flags
+Only in linux-2.4.24_WORKING/drivers/acpi: .depend
+Only in linux-2.4.24_WORKING/drivers/acpi: tables.o
+Only in linux-2.4.24_WORKING/drivers/acpi: .tables.o.flags
+Only in linux-2.4.24_WORKING/drivers/atm: .depend
+Only in linux-2.4.24_WORKING/drivers/block: blkpg.o
+Only in linux-2.4.24_WORKING/drivers/block: .blkpg.o.flags
+Only in linux-2.4.24_WORKING/drivers/block: block.o
+Only in linux-2.4.24_WORKING/drivers/block: .block.o.flags
+Only in linux-2.4.24_WORKING/drivers/block: .depend
+Only in linux-2.4.24_WORKING/drivers/block: elevator.o
+Only in linux-2.4.24_WORKING/drivers/block: .elevator.o.flags
+Only in linux-2.4.24_WORKING/drivers/block: floppy.o
+Only in linux-2.4.24_WORKING/drivers/block: .floppy.o.flags
+Only in linux-2.4.24_WORKING/drivers/block: genhd.o
+Only in linux-2.4.24_WORKING/drivers/block: .genhd.o.flags
+Only in linux-2.4.24_WORKING/drivers/block: ll_rw_blk.o
+Only in linux-2.4.24_WORKING/drivers/block: .ll_rw_blk.o.flags
+Only in linux-2.4.24_WORKING/drivers/block/paride: .depend
+Only in linux-2.4.24_WORKING/drivers/bluetooth: .depend
+Only in linux-2.4.24_WORKING/drivers/cdrom: cdrom.o
+Only in linux-2.4.24_WORKING/drivers/cdrom: .cdrom.o.flags
+Only in linux-2.4.24_WORKING/drivers/cdrom: .depend
+Only in linux-2.4.24_WORKING/drivers/cdrom: driver.o
+Only in linux-2.4.24_WORKING/drivers/cdrom: .driver.o.flags
+Only in linux-2.4.24_WORKING/drivers/char/agp: agpgart_be.o
+Only in linux-2.4.24_WORKING/drivers/char/agp: .agpgart_be.o.flags
+Only in linux-2.4.24_WORKING/drivers/char/agp: agpgart_fe.o
+Only in linux-2.4.24_WORKING/drivers/char/agp: .agpgart_fe.o.flags
+Only in linux-2.4.24_WORKING/drivers/char/agp: agpgart.o
+Only in linux-2.4.24_WORKING/drivers/char/agp: agp.o
+Only in linux-2.4.24_WORKING/drivers/char/agp: .agp.o.flags
+Only in linux-2.4.24_WORKING/drivers/char/agp: .depend
+Only in linux-2.4.24_WORKING/drivers/char: char.o
+Only in linux-2.4.24_WORKING/drivers/char: .char.o.flags
+Only in linux-2.4.24_WORKING/drivers/char: conmakehash
+Only in linux-2.4.24_WORKING/drivers/char: consolemap_deftbl.c
+Only in linux-2.4.24_WORKING/drivers/char: consolemap_deftbl.o
+Only in linux-2.4.24_WORKING/drivers/char: .consolemap_deftbl.o.flags
+Only in linux-2.4.24_WORKING/drivers/char: consolemap.o
+Only in linux-2.4.24_WORKING/drivers/char: .consolemap.o.flags
+Only in linux-2.4.24_WORKING/drivers/char: console.o
+Only in linux-2.4.24_WORKING/drivers/char: .console.o.flags
+Only in linux-2.4.24_WORKING/drivers/char: defkeymap.o
+Only in linux-2.4.24_WORKING/drivers/char: .defkeymap.o.flags
+Only in linux-2.4.24_WORKING/drivers/char: .depend
+Only in linux-2.4.24_WORKING/drivers/char/drm: .depend
+Only in linux-2.4.24_WORKING/drivers/char/drm: drm.o
+Only in linux-2.4.24_WORKING/drivers/char/drm: .drm.o.flags
+Only in linux-2.4.24_WORKING/drivers/char/drm: i810_dma.o
+Only in linux-2.4.24_WORKING/drivers/char/drm: .i810_dma.o.flags
+Only in linux-2.4.24_WORKING/drivers/char/drm: i810_drv.o
+Only in linux-2.4.24_WORKING/drivers/char/drm: .i810_drv.o.flags
+Only in linux-2.4.24_WORKING/drivers/char/drm: i810.o
+Only in linux-2.4.24_WORKING/drivers/char/drm: radeon_cp.o
+Only in linux-2.4.24_WORKING/drivers/char/drm: .radeon_cp.o.flags
+Only in linux-2.4.24_WORKING/drivers/char/drm: radeon_drv.o
+Only in linux-2.4.24_WORKING/drivers/char/drm: .radeon_drv.o.flags
+Only in linux-2.4.24_WORKING/drivers/char/drm: radeon_irq.o
+Only in linux-2.4.24_WORKING/drivers/char/drm: .radeon_irq.o.flags
+Only in linux-2.4.24_WORKING/drivers/char/drm: radeon_mem.o
+Only in linux-2.4.24_WORKING/drivers/char/drm: .radeon_mem.o.flags
+Only in linux-2.4.24_WORKING/drivers/char/drm: radeon.o
+Only in linux-2.4.24_WORKING/drivers/char/drm: radeon_state.o
+Only in linux-2.4.24_WORKING/drivers/char/drm: .radeon_state.o.flags
+Only in linux-2.4.24_WORKING/drivers/char/drm: tdfx_drv.o
+Only in linux-2.4.24_WORKING/drivers/char/drm: .tdfx_drv.o.flags
+Only in linux-2.4.24_WORKING/drivers/char/drm: tdfx.o
+Only in linux-2.4.24_WORKING/drivers/char/drm-4.0: .depend
+Only in linux-2.4.24_WORKING/drivers/char/ftape/compressor: .depend
+Only in linux-2.4.24_WORKING/drivers/char/ftape: .depend
+Only in linux-2.4.24_WORKING/drivers/char/ftape/lowlevel: .depend
+Only in linux-2.4.24_WORKING/drivers/char/ftape/zftape: .depend
+Only in linux-2.4.24_WORKING/drivers/char/ipmi: .depend
+Only in linux-2.4.24_WORKING/drivers/char/joystick: .depend
+Only in linux-2.4.24_WORKING/drivers/char: keyboard.o
+Only in linux-2.4.24_WORKING/drivers/char: .keyboard.o.flags
+Only in linux-2.4.24_WORKING/drivers/char: mem.o
+Only in linux-2.4.24_WORKING/drivers/char: .mem.o.flags
+Only in linux-2.4.24_WORKING/drivers/char: misc.o
+Only in linux-2.4.24_WORKING/drivers/char: .misc.o.flags
+Only in linux-2.4.24_WORKING/drivers/char/mwave: .depend
+Only in linux-2.4.24_WORKING/drivers/char: n_tty.o
+Only in linux-2.4.24_WORKING/drivers/char: .n_tty.o.flags
+Only in linux-2.4.24_WORKING/drivers/char: pc_keyb.o
+Only in linux-2.4.24_WORKING/drivers/char: .pc_keyb.o.flags
+Only in linux-2.4.24_WORKING/drivers/char/pcmcia: .depend
+Only in linux-2.4.24_WORKING/drivers/char/pcmcia: pcmcia_char.o
+Only in linux-2.4.24_WORKING/drivers/char/pcmcia: .pcmcia_char.o.flags
+Only in linux-2.4.24_WORKING/drivers/char: pty.o
+Only in linux-2.4.24_WORKING/drivers/char: .pty.o.flags
+Only in linux-2.4.24_WORKING/drivers/char: random.o
+Only in linux-2.4.24_WORKING/drivers/char: .random.o.flags
+Only in linux-2.4.24_WORKING/drivers/char: raw.o
+Only in linux-2.4.24_WORKING/drivers/char: .raw.o.flags
+Only in linux-2.4.24_WORKING/drivers/char/rio: .depend
+Only in linux-2.4.24_WORKING/drivers/char: selection.o
+Only in linux-2.4.24_WORKING/drivers/char: .selection.o.flags
+Only in linux-2.4.24_WORKING/drivers/char: serial.o
+Only in linux-2.4.24_WORKING/drivers/char: .serial.o.flags
+Only in linux-2.4.24_WORKING/drivers/char: tty_ioctl.o
+Only in linux-2.4.24_WORKING/drivers/char: .tty_ioctl.o.flags
+Only in linux-2.4.24_WORKING/drivers/char: tty_io.o
+Only in linux-2.4.24_WORKING/drivers/char: .tty_io.o.flags
+Only in linux-2.4.24_WORKING/drivers/char: vc_screen.o
+Only in linux-2.4.24_WORKING/drivers/char: .vc_screen.o.flags
+Only in linux-2.4.24_WORKING/drivers/char: vt.o
+Only in linux-2.4.24_WORKING/drivers/char: .vt.o.flags
+Only in linux-2.4.24_WORKING/drivers: .depend
+Only in linux-2.4.24_WORKING/drivers/dio: .depend
+Only in linux-2.4.24_WORKING/drivers/fc4: .depend
+Only in linux-2.4.24_WORKING/drivers/gsc: .depend
+Only in linux-2.4.24_WORKING/drivers/hil: .depend
+Only in linux-2.4.24_WORKING/drivers/hotplug: .depend
+Only in linux-2.4.24_WORKING/drivers/hotplug: vmlinux-obj.o
+Only in linux-2.4.24_WORKING/drivers/hotplug: .vmlinux-obj.o.flags
+Only in linux-2.4.24_WORKING/drivers/i2c: .depend
+Only in linux-2.4.24_WORKING/drivers/ide/arm: .depend
+Only in linux-2.4.24_WORKING/drivers/ide/arm: idedriver-arm.o
+Only in linux-2.4.24_WORKING/drivers/ide/arm: .idedriver-arm.o.flags
+Only in linux-2.4.24_WORKING/drivers/ide: .depend
+Only in linux-2.4.24_WORKING/drivers/ide: ide-cd.o
+Only in linux-2.4.24_WORKING/drivers/ide: .ide-cd.o.flags
+Only in linux-2.4.24_WORKING/drivers/ide: ide-core.o
+Only in linux-2.4.24_WORKING/drivers/ide: ide-default.o
+Only in linux-2.4.24_WORKING/drivers/ide: .ide-default.o.flags
+Only in linux-2.4.24_WORKING/drivers/ide: ide-detect.o
+Only in linux-2.4.24_WORKING/drivers/ide: ide-disk.o
+Only in linux-2.4.24_WORKING/drivers/ide: .ide-disk.o.flags
+Only in linux-2.4.24_WORKING/drivers/ide: ide-dma.o
+Only in linux-2.4.24_WORKING/drivers/ide: .ide-dma.o.flags
+Only in linux-2.4.24_WORKING/drivers/ide: idedriver.o
+Only in linux-2.4.24_WORKING/drivers/ide: .idedriver.o.flags
+Only in linux-2.4.24_WORKING/drivers/ide: ide-geometry.o
+Only in linux-2.4.24_WORKING/drivers/ide: .ide-geometry.o.flags
+Only in linux-2.4.24_WORKING/drivers/ide: ide-io.o
+Only in linux-2.4.24_WORKING/drivers/ide: .ide-io.o.flags
+Only in linux-2.4.24_WORKING/drivers/ide: ide-iops.o
+Only in linux-2.4.24_WORKING/drivers/ide: .ide-iops.o.flags
+Only in linux-2.4.24_WORKING/drivers/ide: ide-lib.o
+Only in linux-2.4.24_WORKING/drivers/ide: .ide-lib.o.flags
+Only in linux-2.4.24_WORKING/drivers/ide: ide.o
+Only in linux-2.4.24_WORKING/drivers/ide: .ide.o.flags
+Only in linux-2.4.24_WORKING/drivers/ide: ide-probe-mini.o
+Only in linux-2.4.24_WORKING/drivers/ide: .ide-probe-mini.o.flags
+Only in linux-2.4.24_WORKING/drivers/ide: ide-probe.o
+Only in linux-2.4.24_WORKING/drivers/ide: .ide-probe.o.flags
+Only in linux-2.4.24_WORKING/drivers/ide: ide-proc.o
+Only in linux-2.4.24_WORKING/drivers/ide: .ide-proc.o.flags
+Only in linux-2.4.24_WORKING/drivers/ide: ide-taskfile.o
+Only in linux-2.4.24_WORKING/drivers/ide: .ide-taskfile.o.flags
+Only in linux-2.4.24_WORKING/drivers/ide/legacy: .depend
+Only in linux-2.4.24_WORKING/drivers/ide/legacy: idedriver-legacy.o
+Only in linux-2.4.24_WORKING/drivers/ide/legacy: .idedriver-legacy.o.flags
+Only in linux-2.4.24_WORKING/drivers/ide/pci: cmd640.o
+Only in linux-2.4.24_WORKING/drivers/ide/pci: .cmd640.o.flags
+Only in linux-2.4.24_WORKING/drivers/ide/pci: .depend
+Only in linux-2.4.24_WORKING/drivers/ide/pci: idedriver-pci.o
+Only in linux-2.4.24_WORKING/drivers/ide/pci: .idedriver-pci.o.flags
+Only in linux-2.4.24_WORKING/drivers/ide/pci: piix.o
+Only in linux-2.4.24_WORKING/drivers/ide/pci: .piix.o.flags
+Only in linux-2.4.24_WORKING/drivers/ide/pci: rz1000.o
+Only in linux-2.4.24_WORKING/drivers/ide/pci: .rz1000.o.flags
+Only in linux-2.4.24_WORKING/drivers/ide/ppc: .depend
+Only in linux-2.4.24_WORKING/drivers/ide/ppc: idedriver-ppc.o
+Only in linux-2.4.24_WORKING/drivers/ide/ppc: .idedriver-ppc.o.flags
+Only in linux-2.4.24_WORKING/drivers/ide/raid: .depend
+Only in linux-2.4.24_WORKING/drivers/ide/raid: idedriver-raid.o
+Only in linux-2.4.24_WORKING/drivers/ide/raid: .idedriver-raid.o.flags
+Only in linux-2.4.24_WORKING/drivers/ide: setup-pci.o
+Only in linux-2.4.24_WORKING/drivers/ide: .setup-pci.o.flags
+Only in linux-2.4.24_WORKING/drivers/ieee1394: .depend
+Only in linux-2.4.24_WORKING/drivers/input: .depend
+Only in linux-2.4.24_WORKING/drivers/isdn/act2000: .depend
+Only in linux-2.4.24_WORKING/drivers/isdn/avmb1: .depend
+Only in linux-2.4.24_WORKING/drivers/isdn: .depend
+Only in linux-2.4.24_WORKING/drivers/isdn/divert: .depend
+Only in linux-2.4.24_WORKING/drivers/isdn/eicon: .depend
+Only in linux-2.4.24_WORKING/drivers/isdn/hisax: .depend
+Only in linux-2.4.24_WORKING/drivers/isdn/hysdn: .depend
+Only in linux-2.4.24_WORKING/drivers/isdn/icn: .depend
+Only in linux-2.4.24_WORKING/drivers/isdn/isdnloop: .depend
+Only in linux-2.4.24_WORKING/drivers/isdn/pcbit: .depend
+Only in linux-2.4.24_WORKING/drivers/isdn/sc: .depend
+Only in linux-2.4.24_WORKING/drivers/isdn/tpam: .depend
+Only in linux-2.4.24_WORKING/drivers/macintosh: .depend
+Only in linux-2.4.24_WORKING/drivers/md: .depend
+Only in linux-2.4.24_WORKING/drivers/media: .depend
+Only in linux-2.4.24_WORKING/drivers/media: media.o
+Only in linux-2.4.24_WORKING/drivers/media: .media.o.flags
+Only in linux-2.4.24_WORKING/drivers/media/radio: .depend
+Only in linux-2.4.24_WORKING/drivers/media/radio: radio.o
+Only in linux-2.4.24_WORKING/drivers/media/radio: .radio.o.flags
+Only in linux-2.4.24_WORKING/drivers/media/video: .depend
+Only in linux-2.4.24_WORKING/drivers/media/video: video.o
+Only in linux-2.4.24_WORKING/drivers/media/video: .video.o.flags
+Only in linux-2.4.24_WORKING/drivers/message/fusion: .depend
+Only in linux-2.4.24_WORKING/drivers/message/i2o: .depend
+Only in linux-2.4.24_WORKING/drivers/misc: .depend
+Only in linux-2.4.24_WORKING/drivers/misc: misc.o
+Only in linux-2.4.24_WORKING/drivers/misc: .misc.o.flags
+Only in linux-2.4.24_WORKING/drivers/mtd/chips: .depend
+Only in linux-2.4.24_WORKING/drivers/mtd: .depend
+Only in linux-2.4.24_WORKING/drivers/mtd/devices: .depend
+Only in linux-2.4.24_WORKING/drivers/mtd/maps: .depend
+Only in linux-2.4.24_WORKING/drivers/mtd/nand: .depend
+Only in linux-2.4.24_WORKING/drivers/net: 8390.o
+Only in linux-2.4.24_WORKING/drivers/net: .8390.o.flags
+Only in linux-2.4.24_WORKING/drivers/net/appletalk: .depend
+Only in linux-2.4.24_WORKING/drivers/net/arcnet: .depend
+Only in linux-2.4.24_WORKING/drivers/net: auto_irq.o
+Only in linux-2.4.24_WORKING/drivers/net: .auto_irq.o.flags
+Only in linux-2.4.24_WORKING/drivers/net/bonding: .depend
+Only in linux-2.4.24_WORKING/drivers/net: .depend
+Only in linux-2.4.24_WORKING/drivers/net: dummy.o
+Only in linux-2.4.24_WORKING/drivers/net: .dummy.o.flags
+Only in linux-2.4.24_WORKING/drivers/net/e100: .depend
+Only in linux-2.4.24_WORKING/drivers/net/e1000: .depend
+Only in linux-2.4.24_WORKING/drivers/net: eepro100.o
+Only in linux-2.4.24_WORKING/drivers/net: .eepro100.o.flags
+Only in linux-2.4.24_WORKING/drivers/net/fc: .depend
+Only in linux-2.4.24_WORKING/drivers/net/hamradio: .depend
+Only in linux-2.4.24_WORKING/drivers/net/hamradio/soundmodem: .depend
+Only in linux-2.4.24_WORKING/drivers/net/hamradio/soundmodem: gentbl
+Only in linux-2.4.24_WORKING/drivers/net/hamradio/soundmodem: sm_tbl_afsk1200.h
+Only in linux-2.4.24_WORKING/drivers/net/hamradio/soundmodem: sm_tbl_afsk2400_7.h
+Only in linux-2.4.24_WORKING/drivers/net/hamradio/soundmodem: sm_tbl_afsk2400_8.h
+Only in linux-2.4.24_WORKING/drivers/net/hamradio/soundmodem: sm_tbl_afsk2666.h
+Only in linux-2.4.24_WORKING/drivers/net/hamradio/soundmodem: sm_tbl_fsk9600.h
+Only in linux-2.4.24_WORKING/drivers/net/hamradio/soundmodem: sm_tbl_hapn4800.h
+Only in linux-2.4.24_WORKING/drivers/net/hamradio/soundmodem: sm_tbl_psk4800.h
+Only in linux-2.4.24_WORKING/drivers/net/ibm_emac: .depend
+Only in linux-2.4.24_WORKING/drivers/net/irda: .depend
+Only in linux-2.4.24_WORKING/drivers/net: loopback.o
+Only in linux-2.4.24_WORKING/drivers/net: .loopback.o.flags
+Only in linux-2.4.24_WORKING/drivers/net: mii.o
+Only in linux-2.4.24_WORKING/drivers/net: .mii.o.flags
+Only in linux-2.4.24_WORKING/drivers/net: net_init.o
+Only in linux-2.4.24_WORKING/drivers/net: .net_init.o.flags
+Only in linux-2.4.24_WORKING/drivers/net: net.o
+Only in linux-2.4.24_WORKING/drivers/net: .net.o.flags
+Only in linux-2.4.24_WORKING/drivers/net/pcmcia: .depend
+Only in linux-2.4.24_WORKING/drivers/net/pcmcia: pcmcia_net.o
+Only in linux-2.4.24_WORKING/drivers/net/pcmcia: .pcmcia_net.o.flags
+Only in linux-2.4.24_WORKING/drivers/net/pcmcia: pcnet_cs.o
+Only in linux-2.4.24_WORKING/drivers/net/pcmcia: .pcnet_cs.o.flags
+Only in linux-2.4.24_WORKING/drivers/net/pcmcia: ray_cs.o
+Only in linux-2.4.24_WORKING/drivers/net/pcmcia: .ray_cs.o.flags
+Only in linux-2.4.24_WORKING/drivers/net: setup.o
+Only in linux-2.4.24_WORKING/drivers/net: .setup.o.flags
+Only in linux-2.4.24_WORKING/drivers/net/sk98lin: .depend
+Only in linux-2.4.24_WORKING/drivers/net/skfp: .depend
+Only in linux-2.4.24_WORKING/drivers/net: Space.o
+Only in linux-2.4.24_WORKING/drivers/net: .Space.o.flags
+Only in linux-2.4.24_WORKING/drivers/net/tokenring: .depend
+Only in linux-2.4.24_WORKING/drivers/net/tulip: .depend
+Only in linux-2.4.24_WORKING/drivers/net/wan/8253x: .depend
+Only in linux-2.4.24_WORKING/drivers/net/wan: .depend
+Only in linux-2.4.24_WORKING/drivers/net/wan/lmc: .depend
+Only in linux-2.4.24_WORKING/drivers/net/wireless: .depend
+Only in linux-2.4.24_WORKING/drivers/nubus: .depend
+Only in linux-2.4.24_WORKING/drivers/parport: .depend
+Only in linux-2.4.24_WORKING/drivers/parport: driver.o
+Only in linux-2.4.24_WORKING/drivers/parport: .driver.o.flags
+Only in linux-2.4.24_WORKING/drivers/pci: classlist.h
+Only in linux-2.4.24_WORKING/drivers/pci: compat.o
+Only in linux-2.4.24_WORKING/drivers/pci: .compat.o.flags
+Only in linux-2.4.24_WORKING/drivers/pci: .depend
+Only in linux-2.4.24_WORKING/drivers/pci: devlist.h
+Only in linux-2.4.24_WORKING/drivers/pci: driver.o
+Only in linux-2.4.24_WORKING/drivers/pci: .driver.o.flags
+Only in linux-2.4.24_WORKING/drivers/pci: gen-devlist
+Only in linux-2.4.24_WORKING/drivers/pci: names.o
+Only in linux-2.4.24_WORKING/drivers/pci: .names.o.flags
+Only in linux-2.4.24_WORKING/drivers/pci: pci.o
+Only in linux-2.4.24_WORKING/drivers/pci: .pci.o.flags
+Only in linux-2.4.24_WORKING/drivers/pci: proc.o
+Only in linux-2.4.24_WORKING/drivers/pci: .proc.o.flags
+Only in linux-2.4.24_WORKING/drivers/pci: quirks.o
+Only in linux-2.4.24_WORKING/drivers/pci: .quirks.o.flags
+Only in linux-2.4.24_WORKING/drivers/pci: setup-res.o
+Only in linux-2.4.24_WORKING/drivers/pci: .setup-res.o.flags
+Only in linux-2.4.24_WORKING/drivers/pcmcia: bulkmem.o
+Only in linux-2.4.24_WORKING/drivers/pcmcia: .bulkmem.o.flags
+Only in linux-2.4.24_WORKING/drivers/pcmcia: cardbus.o
+Only in linux-2.4.24_WORKING/drivers/pcmcia: .cardbus.o.flags
+Only in linux-2.4.24_WORKING/drivers/pcmcia: cistpl.o
+Only in linux-2.4.24_WORKING/drivers/pcmcia: .cistpl.o.flags
+Only in linux-2.4.24_WORKING/drivers/pcmcia: cs.o
+Only in linux-2.4.24_WORKING/drivers/pcmcia: .cs.o.flags
+Only in linux-2.4.24_WORKING/drivers/pcmcia: .depend
+Only in linux-2.4.24_WORKING/drivers/pcmcia: ds.o
+Only in linux-2.4.24_WORKING/drivers/pcmcia: .ds.o.flags
+Only in linux-2.4.24_WORKING/drivers/pcmcia: pci_socket.o
+Only in linux-2.4.24_WORKING/drivers/pcmcia: .pci_socket.o.flags
+Only in linux-2.4.24_WORKING/drivers/pcmcia: pcmcia.o
+Only in linux-2.4.24_WORKING/drivers/pcmcia: .pcmcia.o.flags
+Only in linux-2.4.24_WORKING/drivers/pcmcia: rsrc_mgr.o
+Only in linux-2.4.24_WORKING/drivers/pcmcia: .rsrc_mgr.o.flags
+Only in linux-2.4.24_WORKING/drivers/pcmcia: yenta.o
+Only in linux-2.4.24_WORKING/drivers/pcmcia: .yenta.o.flags
+Only in linux-2.4.24_WORKING/drivers/pnp: .depend
+Only in linux-2.4.24_WORKING/drivers/pnp: isa-pnp.o
+Only in linux-2.4.24_WORKING/drivers/pnp: isapnp.o
+Only in linux-2.4.24_WORKING/drivers/pnp: .isapnp.o.flags
+Only in linux-2.4.24_WORKING/drivers/pnp: isapnp_proc.o
+Only in linux-2.4.24_WORKING/drivers/pnp: .isapnp_proc.o.flags
+Only in linux-2.4.24_WORKING/drivers/pnp: pnp.o
+Only in linux-2.4.24_WORKING/drivers/pnp: .pnp.o.flags
+Only in linux-2.4.24_WORKING/drivers/pnp: quirks.o
+Only in linux-2.4.24_WORKING/drivers/pnp: .quirks.o.flags
+Only in linux-2.4.24_WORKING/drivers/sbus/audio: .depend
+Only in linux-2.4.24_WORKING/drivers/sbus/char: .depend
+Only in linux-2.4.24_WORKING/drivers/sbus: .depend
+Only in linux-2.4.24_WORKING/drivers/scsi/aacraid: .depend
+Only in linux-2.4.24_WORKING/drivers/scsi/aic7xxx: .depend
+Only in linux-2.4.24_WORKING/drivers/scsi: constants.o
+Only in linux-2.4.24_WORKING/drivers/scsi: .constants.o.flags
+Only in linux-2.4.24_WORKING/drivers/scsi: .depend
+Only in linux-2.4.24_WORKING/drivers/scsi: hosts.o
+Only in linux-2.4.24_WORKING/drivers/scsi: .hosts.o.flags
+Only in linux-2.4.24_WORKING/drivers/scsi/pcmcia: .depend
+Only in linux-2.4.24_WORKING/drivers/scsi: scsicam.o
+Only in linux-2.4.24_WORKING/drivers/scsi: .scsicam.o.flags
+Only in linux-2.4.24_WORKING/drivers/scsi: scsi_dma.o
+Only in linux-2.4.24_WORKING/drivers/scsi: .scsi_dma.o.flags
+Only in linux-2.4.24_WORKING/drivers/scsi: scsidrv.o
+Only in linux-2.4.24_WORKING/drivers/scsi: .scsidrv.o.flags
+Only in linux-2.4.24_WORKING/drivers/scsi: scsi_error.o
+Only in linux-2.4.24_WORKING/drivers/scsi: .scsi_error.o.flags
+Only in linux-2.4.24_WORKING/drivers/scsi: scsi_ioctl.o
+Only in linux-2.4.24_WORKING/drivers/scsi: .scsi_ioctl.o.flags
+Only in linux-2.4.24_WORKING/drivers/scsi: scsi_lib.o
+Only in linux-2.4.24_WORKING/drivers/scsi: .scsi_lib.o.flags
+Only in linux-2.4.24_WORKING/drivers/scsi: scsi_merge.o
+Only in linux-2.4.24_WORKING/drivers/scsi: .scsi_merge.o.flags
+Only in linux-2.4.24_WORKING/drivers/scsi: scsi_mod.o
+Only in linux-2.4.24_WORKING/drivers/scsi: scsi.o
+Only in linux-2.4.24_WORKING/drivers/scsi: scsi_obsolete.o
+Only in linux-2.4.24_WORKING/drivers/scsi: .scsi_obsolete.o.flags
+Only in linux-2.4.24_WORKING/drivers/scsi: .scsi.o.flags
+Only in linux-2.4.24_WORKING/drivers/scsi: scsi_proc.o
+Only in linux-2.4.24_WORKING/drivers/scsi: .scsi_proc.o.flags
+Only in linux-2.4.24_WORKING/drivers/scsi: scsi_queue.o
+Only in linux-2.4.24_WORKING/drivers/scsi: .scsi_queue.o.flags
+Only in linux-2.4.24_WORKING/drivers/scsi: scsi_scan.o
+Only in linux-2.4.24_WORKING/drivers/scsi: .scsi_scan.o.flags
+Only in linux-2.4.24_WORKING/drivers/scsi: scsi_syms.o
+Only in linux-2.4.24_WORKING/drivers/scsi: .scsi_syms.o.flags
+Only in linux-2.4.24_WORKING/drivers/scsi: sd_mod.o
+Only in linux-2.4.24_WORKING/drivers/scsi: sd.o
+Only in linux-2.4.24_WORKING/drivers/scsi: .sd.o.flags
+Only in linux-2.4.24_WORKING/drivers/scsi/sym53c8xx_2: .depend
+Only in linux-2.4.24_WORKING/drivers/scsi: sym53c8xx.o
+Only in linux-2.4.24_WORKING/drivers/scsi: .sym53c8xx.o.flags
+Only in linux-2.4.24_WORKING/drivers/sound: ac97_codec.o
+Only in linux-2.4.24_WORKING/drivers/sound: .ac97_codec.o.flags
+Only in linux-2.4.24_WORKING/drivers/sound/cs4281: .depend
+Only in linux-2.4.24_WORKING/drivers/sound: .depend
+Only in linux-2.4.24_WORKING/drivers/sound/dmasound: .depend
+Only in linux-2.4.24_WORKING/drivers/sound/emu10k1: .depend
+Only in linux-2.4.24_WORKING/drivers/sound: es1371.o
+Only in linux-2.4.24_WORKING/drivers/sound: .es1371.o.flags
+Only in linux-2.4.24_WORKING/drivers/sound: sound_core.o
+Only in linux-2.4.24_WORKING/drivers/sound: soundcore.o
+Only in linux-2.4.24_WORKING/drivers/sound: .sound_core.o.flags
+Only in linux-2.4.24_WORKING/drivers/sound: sounddrivers.o
+Only in linux-2.4.24_WORKING/drivers/sound: .sounddrivers.o.flags
+Only in linux-2.4.24_WORKING/drivers/sound: sound_firmware.o
+Only in linux-2.4.24_WORKING/drivers/sound: .sound_firmware.o.flags
+Only in linux-2.4.24_WORKING/drivers/tc: .depend
+Only in linux-2.4.24_WORKING/drivers/telephony: .depend
+Only in linux-2.4.24_WORKING/drivers/usb: .depend
+Only in linux-2.4.24_WORKING/drivers/usb/gadget: .depend
+Only in linux-2.4.24_WORKING/drivers/usb: hcd.o
+Only in linux-2.4.24_WORKING/drivers/usb: .hcd.o.flags
+Only in linux-2.4.24_WORKING/drivers/usb/host: .depend
+Only in linux-2.4.24_WORKING/drivers/usb/host: uhci.o
+Only in linux-2.4.24_WORKING/drivers/usb/host: .uhci.o.flags
+Only in linux-2.4.24_WORKING/drivers/usb: hub.o
+Only in linux-2.4.24_WORKING/drivers/usb: .hub.o.flags
+Only in linux-2.4.24_WORKING/drivers/usb/serial: .depend
+Only in linux-2.4.24_WORKING/drivers/usb/storage: .depend
+Only in linux-2.4.24_WORKING/drivers/usb/storage: initializers.o
+Only in linux-2.4.24_WORKING/drivers/usb/storage: .initializers.o.flags
+Only in linux-2.4.24_WORKING/drivers/usb/storage: protocol.o
+Only in linux-2.4.24_WORKING/drivers/usb/storage: .protocol.o.flags
+Only in linux-2.4.24_WORKING/drivers/usb/storage: scsiglue.o
+Only in linux-2.4.24_WORKING/drivers/usb/storage: .scsiglue.o.flags
+Only in linux-2.4.24_WORKING/drivers/usb/storage: storage.o
+Only in linux-2.4.24_WORKING/drivers/usb/storage: .storage.o.flags
+Only in linux-2.4.24_WORKING/drivers/usb/storage: transport.o
+Only in linux-2.4.24_WORKING/drivers/usb/storage: .transport.o.flags
+Only in linux-2.4.24_WORKING/drivers/usb/storage: usb.o
+Only in linux-2.4.24_WORKING/drivers/usb/storage: .usb.o.flags
+Only in linux-2.4.24_WORKING/drivers/usb/storage: usb-storage.o
+Only in linux-2.4.24_WORKING/drivers/usb: usbcore.o
+Only in linux-2.4.24_WORKING/drivers/usb: usb-debug.o
+Only in linux-2.4.24_WORKING/drivers/usb: .usb-debug.o.flags
+Only in linux-2.4.24_WORKING/drivers/usb: usbdrv.o
+Only in linux-2.4.24_WORKING/drivers/usb: .usbdrv.o.flags
+Only in linux-2.4.24_WORKING/drivers/usb: usb.o
+Only in linux-2.4.24_WORKING/drivers/usb: .usb.o.flags
+Only in linux-2.4.24_WORKING/drivers/video/aty: .depend
+Only in linux-2.4.24_WORKING/drivers/video: .depend
+Only in linux-2.4.24_WORKING/drivers/video/intel: .depend
+Only in linux-2.4.24_WORKING/drivers/video/matrox: .depend
+Only in linux-2.4.24_WORKING/drivers/video/riva: .depend
+Only in linux-2.4.24_WORKING/drivers/video/sis: .depend
+Only in linux-2.4.24_WORKING/drivers/video/sti: .depend
+Only in linux-2.4.24_WORKING/drivers/video: vgacon.o
+Only in linux-2.4.24_WORKING/drivers/video: .vgacon.o.flags
+Only in linux-2.4.24_WORKING/drivers/video: video.o
+Only in linux-2.4.24_WORKING/drivers/video: .video.o.flags
+Only in linux-2.4.24_WORKING/drivers/zorro: .depend
+Only in linux-2.4.24_WORKING/fs/adfs: .depend
+Only in linux-2.4.24_WORKING/fs/affs: .depend
+Only in linux-2.4.24_WORKING/fs: attr.o
+Only in linux-2.4.24_WORKING/fs: .attr.o.flags
+Only in linux-2.4.24_WORKING/fs/autofs: .depend
+Only in linux-2.4.24_WORKING/fs/autofs4: autofs4.o
+Only in linux-2.4.24_WORKING/fs/autofs4: .autofs4.o.flags
+Only in linux-2.4.24_WORKING/fs/autofs4: .depend
+Only in linux-2.4.24_WORKING/fs/autofs4: expire.o
+Only in linux-2.4.24_WORKING/fs/autofs4: .expire.o.flags
+Only in linux-2.4.24_WORKING/fs/autofs4: init.o
+Only in linux-2.4.24_WORKING/fs/autofs4: .init.o.flags
+Only in linux-2.4.24_WORKING/fs/autofs4: inode.o
+Only in linux-2.4.24_WORKING/fs/autofs4: .inode.o.flags
+Only in linux-2.4.24_WORKING/fs/autofs4: root.o
+Only in linux-2.4.24_WORKING/fs/autofs4: .root.o.flags
+Only in linux-2.4.24_WORKING/fs/autofs4: symlink.o
+Only in linux-2.4.24_WORKING/fs/autofs4: .symlink.o.flags
+Only in linux-2.4.24_WORKING/fs/autofs4: waitq.o
+Only in linux-2.4.24_WORKING/fs/autofs4: .waitq.o.flags
+Only in linux-2.4.24_WORKING/fs: bad_inode.o
+Only in linux-2.4.24_WORKING/fs: .bad_inode.o.flags
+Only in linux-2.4.24_WORKING/fs/befs: .depend
+Only in linux-2.4.24_WORKING/fs/bfs: .depend
+Only in linux-2.4.24_WORKING/fs: binfmt_aout.o
+Only in linux-2.4.24_WORKING/fs: .binfmt_aout.o.flags
+Only in linux-2.4.24_WORKING/fs: binfmt_elf.o
+Only in linux-2.4.24_WORKING/fs: .binfmt_elf.o.flags
+Only in linux-2.4.24_WORKING/fs: binfmt_misc.o
+Only in linux-2.4.24_WORKING/fs: .binfmt_misc.o.flags
+Only in linux-2.4.24_WORKING/fs: binfmt_script.o
+Only in linux-2.4.24_WORKING/fs: .binfmt_script.o.flags
+Only in linux-2.4.24_WORKING/fs: block_dev.o
+Only in linux-2.4.24_WORKING/fs: .block_dev.o.flags
+Only in linux-2.4.24_WORKING/fs: buffer.o
+Only in linux-2.4.24_WORKING/fs: .buffer.o.flags
+Only in linux-2.4.24_WORKING/fs: char_dev.o
+Only in linux-2.4.24_WORKING/fs: .char_dev.o.flags
+Only in linux-2.4.24_WORKING/fs/coda: .depend
+Only in linux-2.4.24_WORKING/fs/cramfs: .depend
+Only in linux-2.4.24_WORKING/fs: dcache.o
+Only in linux-2.4.24_WORKING/fs: .dcache.o.flags
+Only in linux-2.4.24_WORKING/fs: .depend
+Only in linux-2.4.24_WORKING/fs/devfs: .depend
+Only in linux-2.4.24_WORKING/fs: devices.o
+Only in linux-2.4.24_WORKING/fs: .devices.o.flags
+Only in linux-2.4.24_WORKING/fs/devpts: .depend
+Only in linux-2.4.24_WORKING/fs/devpts: devpts.o
+Only in linux-2.4.24_WORKING/fs/devpts: .devpts.o.flags
+Only in linux-2.4.24_WORKING/fs/devpts: inode.o
+Only in linux-2.4.24_WORKING/fs/devpts: .inode.o.flags
+Only in linux-2.4.24_WORKING/fs/devpts: root.o
+Only in linux-2.4.24_WORKING/fs/devpts: .root.o.flags
+Only in linux-2.4.24_WORKING/fs: dnotify.o
+Only in linux-2.4.24_WORKING/fs: .dnotify.o.flags
+Only in linux-2.4.24_WORKING/fs/efs: .depend
+Only in linux-2.4.24_WORKING/fs: exec.o
+Only in linux-2.4.24_WORKING/fs: .exec.o.flags
+Only in linux-2.4.24_WORKING/fs/ext2: balloc.o
+Only in linux-2.4.24_WORKING/fs/ext2: .balloc.o.flags
+Only in linux-2.4.24_WORKING/fs/ext2: bitmap.o
+Only in linux-2.4.24_WORKING/fs/ext2: .bitmap.o.flags
+Only in linux-2.4.24_WORKING/fs/ext2: .depend
+Only in linux-2.4.24_WORKING/fs/ext2: dir.o
+Only in linux-2.4.24_WORKING/fs/ext2: .dir.o.flags
+Only in linux-2.4.24_WORKING/fs/ext2: ext2.o
+Only in linux-2.4.24_WORKING/fs/ext2: .ext2.o.flags
+Only in linux-2.4.24_WORKING/fs/ext2: file.o
+Only in linux-2.4.24_WORKING/fs/ext2: .file.o.flags
+Only in linux-2.4.24_WORKING/fs/ext2: fsync.o
+Only in linux-2.4.24_WORKING/fs/ext2: .fsync.o.flags
+Only in linux-2.4.24_WORKING/fs/ext2: ialloc.o
+Only in linux-2.4.24_WORKING/fs/ext2: .ialloc.o.flags
+Only in linux-2.4.24_WORKING/fs/ext2: inode.o
+Only in linux-2.4.24_WORKING/fs/ext2: .inode.o.flags
+Only in linux-2.4.24_WORKING/fs/ext2: ioctl.o
+Only in linux-2.4.24_WORKING/fs/ext2: .ioctl.o.flags
+Only in linux-2.4.24_WORKING/fs/ext2: namei.o
+Only in linux-2.4.24_WORKING/fs/ext2: .namei.o.flags
+Only in linux-2.4.24_WORKING/fs/ext2: super.o
+Only in linux-2.4.24_WORKING/fs/ext2: .super.o.flags
+Only in linux-2.4.24_WORKING/fs/ext2: symlink.o
+Only in linux-2.4.24_WORKING/fs/ext2: .symlink.o.flags
+Only in linux-2.4.24_WORKING/fs/ext3: .depend
+Only in linux-2.4.24_WORKING/fs/fat: .depend
+Only in linux-2.4.24_WORKING/fs: fcntl.o
+Only in linux-2.4.24_WORKING/fs: .fcntl.o.flags
+Only in linux-2.4.24_WORKING/fs: fifo.o
+Only in linux-2.4.24_WORKING/fs: .fifo.o.flags
+Only in linux-2.4.24_WORKING/fs: file.o
+Only in linux-2.4.24_WORKING/fs: .file.o.flags
+Only in linux-2.4.24_WORKING/fs: filesystems.o
+Only in linux-2.4.24_WORKING/fs: .filesystems.o.flags
+Only in linux-2.4.24_WORKING/fs: file_table.o
+Only in linux-2.4.24_WORKING/fs: .file_table.o.flags
+Only in linux-2.4.24_WORKING/fs/freevxfs: .depend
+Only in linux-2.4.24_WORKING/fs: fs.o
+Only in linux-2.4.24_WORKING/fs: .fs.o.flags
+Only in linux-2.4.24_WORKING/fs/hfs: .depend
+Only in linux-2.4.24_WORKING/fs/hfsplus: .depend
+Only in linux-2.4.24_WORKING/fs/hpfs: .depend
+Only in linux-2.4.24_WORKING/fs: inode.o
+Only in linux-2.4.24_WORKING/fs: .inode.o.flags
+Only in linux-2.4.24_WORKING/fs/intermezzo: .depend
+Only in linux-2.4.24_WORKING/fs: iobuf.o
+Only in linux-2.4.24_WORKING/fs: .iobuf.o.flags
+Only in linux-2.4.24_WORKING/fs: ioctl.o
+Only in linux-2.4.24_WORKING/fs: .ioctl.o.flags
+Only in linux-2.4.24_WORKING/fs/isofs: .depend
+Only in linux-2.4.24_WORKING/fs/isofs: dir.o
+Only in linux-2.4.24_WORKING/fs/isofs: .dir.o.flags
+Only in linux-2.4.24_WORKING/fs/isofs: inode.o
+Only in linux-2.4.24_WORKING/fs/isofs: .inode.o.flags
+Only in linux-2.4.24_WORKING/fs/isofs: isofs.o
+Only in linux-2.4.24_WORKING/fs/isofs: .isofs.o.flags
+Only in linux-2.4.24_WORKING/fs/isofs: namei.o
+Only in linux-2.4.24_WORKING/fs/isofs: .namei.o.flags
+Only in linux-2.4.24_WORKING/fs/isofs: rock.o
+Only in linux-2.4.24_WORKING/fs/isofs: .rock.o.flags
+Only in linux-2.4.24_WORKING/fs/isofs: util.o
+Only in linux-2.4.24_WORKING/fs/isofs: .util.o.flags
+Only in linux-2.4.24_WORKING/fs/jbd: .depend
+Only in linux-2.4.24_WORKING/fs/jffs: .depend
+Only in linux-2.4.24_WORKING/fs/jffs2: .depend
+Only in linux-2.4.24_WORKING/fs/jfs: .depend
+Only in linux-2.4.24_WORKING/fs/lockd: clntlock.o
+Only in linux-2.4.24_WORKING/fs/lockd: .clntlock.o.flags
+Only in linux-2.4.24_WORKING/fs/lockd: clntproc.o
+Only in linux-2.4.24_WORKING/fs/lockd: .clntproc.o.flags
+Only in linux-2.4.24_WORKING/fs/lockd: .depend
+Only in linux-2.4.24_WORKING/fs/lockd: host.o
+Only in linux-2.4.24_WORKING/fs/lockd: .host.o.flags
+Only in linux-2.4.24_WORKING/fs/lockd: lockd.o
+Only in linux-2.4.24_WORKING/fs/lockd: .lockd.o.flags
+Only in linux-2.4.24_WORKING/fs/lockd: lockd_syms.o
+Only in linux-2.4.24_WORKING/fs/lockd: .lockd_syms.o.flags
+Only in linux-2.4.24_WORKING/fs/lockd: mon.o
+Only in linux-2.4.24_WORKING/fs/lockd: .mon.o.flags
+Only in linux-2.4.24_WORKING/fs/lockd: svclock.o
+Only in linux-2.4.24_WORKING/fs/lockd: .svclock.o.flags
+Only in linux-2.4.24_WORKING/fs/lockd: svc.o
+Only in linux-2.4.24_WORKING/fs/lockd: .svc.o.flags
+Only in linux-2.4.24_WORKING/fs/lockd: svcproc.o
+Only in linux-2.4.24_WORKING/fs/lockd: .svcproc.o.flags
+Only in linux-2.4.24_WORKING/fs/lockd: svcshare.o
+Only in linux-2.4.24_WORKING/fs/lockd: .svcshare.o.flags
+Only in linux-2.4.24_WORKING/fs/lockd: svcsubs.o
+Only in linux-2.4.24_WORKING/fs/lockd: .svcsubs.o.flags
+Only in linux-2.4.24_WORKING/fs/lockd: xdr.o
+Only in linux-2.4.24_WORKING/fs/lockd: .xdr.o.flags
+Only in linux-2.4.24_WORKING/fs: locks.o
+Only in linux-2.4.24_WORKING/fs: .locks.o.flags
+Only in linux-2.4.24_WORKING/fs/minix: .depend
+Only in linux-2.4.24_WORKING/fs/msdos: .depend
+Only in linux-2.4.24_WORKING/fs: namei.o
+Only in linux-2.4.24_WORKING/fs: .namei.o.flags
+Only in linux-2.4.24_WORKING/fs: namespace.o
+Only in linux-2.4.24_WORKING/fs: .namespace.o.flags
+Only in linux-2.4.24_WORKING/fs/ncpfs: .depend
+Only in linux-2.4.24_WORKING/fs/nfs: .depend
+Only in linux-2.4.24_WORKING/fs/nfs: dir.o
+Only in linux-2.4.24_WORKING/fs/nfs: .dir.o.flags
+Only in linux-2.4.24_WORKING/fs/nfs: file.o
+Only in linux-2.4.24_WORKING/fs/nfs: .file.o.flags
+Only in linux-2.4.24_WORKING/fs/nfs: flushd.o
+Only in linux-2.4.24_WORKING/fs/nfs: .flushd.o.flags
+Only in linux-2.4.24_WORKING/fs/nfs: inode.o
+Only in linux-2.4.24_WORKING/fs/nfs: .inode.o.flags
+Only in linux-2.4.24_WORKING/fs/nfs: nfs2xdr.o
+Only in linux-2.4.24_WORKING/fs/nfs: .nfs2xdr.o.flags
+Only in linux-2.4.24_WORKING/fs/nfs: nfs.o
+Only in linux-2.4.24_WORKING/fs/nfs: .nfs.o.flags
+Only in linux-2.4.24_WORKING/fs/nfs: pagelist.o
+Only in linux-2.4.24_WORKING/fs/nfs: .pagelist.o.flags
+Only in linux-2.4.24_WORKING/fs/nfs: proc.o
+Only in linux-2.4.24_WORKING/fs/nfs: .proc.o.flags
+Only in linux-2.4.24_WORKING/fs/nfs: read.o
+Only in linux-2.4.24_WORKING/fs/nfs: .read.o.flags
+Only in linux-2.4.24_WORKING/fs/nfs: symlink.o
+Only in linux-2.4.24_WORKING/fs/nfs: .symlink.o.flags
+Only in linux-2.4.24_WORKING/fs/nfs: unlink.o
+Only in linux-2.4.24_WORKING/fs/nfs: .unlink.o.flags
+Only in linux-2.4.24_WORKING/fs/nfs: write.o
+Only in linux-2.4.24_WORKING/fs/nfs: .write.o.flags
+Only in linux-2.4.24_WORKING/fs/nfsd: auth.o
+Only in linux-2.4.24_WORKING/fs/nfsd: .auth.o.flags
+Only in linux-2.4.24_WORKING/fs/nfsd: .depend
+Only in linux-2.4.24_WORKING/fs/nfsd: export.o
+Only in linux-2.4.24_WORKING/fs/nfsd: .export.o.flags
+Only in linux-2.4.24_WORKING/fs/nfsd: lockd.o
+Only in linux-2.4.24_WORKING/fs/nfsd: .lockd.o.flags
+Only in linux-2.4.24_WORKING/fs/nfsd: nfscache.o
+Only in linux-2.4.24_WORKING/fs/nfsd: .nfscache.o.flags
+Only in linux-2.4.24_WORKING/fs/nfsd: nfsctl.o
+Only in linux-2.4.24_WORKING/fs/nfsd: .nfsctl.o.flags
+Only in linux-2.4.24_WORKING/fs/nfsd: nfsd.o
+Only in linux-2.4.24_WORKING/fs/nfsd: .nfsd.o.flags
+Only in linux-2.4.24_WORKING/fs/nfsd: nfsfh.o
+Only in linux-2.4.24_WORKING/fs/nfsd: .nfsfh.o.flags
+Only in linux-2.4.24_WORKING/fs/nfsd: nfsproc.o
+Only in linux-2.4.24_WORKING/fs/nfsd: .nfsproc.o.flags
+Only in linux-2.4.24_WORKING/fs/nfsd: nfssvc.o
+Only in linux-2.4.24_WORKING/fs/nfsd: .nfssvc.o.flags
+Only in linux-2.4.24_WORKING/fs/nfsd: nfsxdr.o
+Only in linux-2.4.24_WORKING/fs/nfsd: .nfsxdr.o.flags
+Only in linux-2.4.24_WORKING/fs/nfsd: stats.o
+Only in linux-2.4.24_WORKING/fs/nfsd: .stats.o.flags
+Only in linux-2.4.24_WORKING/fs/nfsd: vfs.o
+Only in linux-2.4.24_WORKING/fs/nfsd: .vfs.o.flags
+Only in linux-2.4.24_WORKING/fs/nls: .depend
+Only in linux-2.4.24_WORKING/fs/ntfs: .depend
+Only in linux-2.4.24_WORKING/fs: open.o
+Only in linux-2.4.24_WORKING/fs: .open.o.flags
+Only in linux-2.4.24_WORKING/fs/openpromfs: .depend
+Only in linux-2.4.24_WORKING/fs/partitions: check.o
+Only in linux-2.4.24_WORKING/fs/partitions: .check.o.flags
+Only in linux-2.4.24_WORKING/fs/partitions: .depend
+Only in linux-2.4.24_WORKING/fs/partitions: msdos.o
+Only in linux-2.4.24_WORKING/fs/partitions: .msdos.o.flags
+Only in linux-2.4.24_WORKING/fs/partitions: partitions.o
+Only in linux-2.4.24_WORKING/fs/partitions: .partitions.o.flags
+Only in linux-2.4.24_WORKING/fs: pipe.o
+Only in linux-2.4.24_WORKING/fs: .pipe.o.flags
+Only in linux-2.4.24_WORKING/fs/proc: array.o
+Only in linux-2.4.24_WORKING/fs/proc: .array.o.flags
+Only in linux-2.4.24_WORKING/fs/proc: base.o
+Only in linux-2.4.24_WORKING/fs/proc: .base.o.flags
+Only in linux-2.4.24_WORKING/fs/proc: .depend
+Only in linux-2.4.24_WORKING/fs/proc: generic.o
+Only in linux-2.4.24_WORKING/fs/proc: .generic.o.flags
+Only in linux-2.4.24_WORKING/fs/proc: inode.o
+Only in linux-2.4.24_WORKING/fs/proc: .inode.o.flags
+Only in linux-2.4.24_WORKING/fs/proc: kcore.o
+Only in linux-2.4.24_WORKING/fs/proc: .kcore.o.flags
+Only in linux-2.4.24_WORKING/fs/proc: kmsg.o
+Only in linux-2.4.24_WORKING/fs/proc: .kmsg.o.flags
+Only in linux-2.4.24_WORKING/fs/proc: proc_misc.o
+Only in linux-2.4.24_WORKING/fs/proc: .proc_misc.o.flags
+Only in linux-2.4.24_WORKING/fs/proc: proc.o
+Only in linux-2.4.24_WORKING/fs/proc: .proc.o.flags
+Only in linux-2.4.24_WORKING/fs/proc: proc_tty.o
+Only in linux-2.4.24_WORKING/fs/proc: .proc_tty.o.flags
+Only in linux-2.4.24_WORKING/fs/proc: root.o
+Only in linux-2.4.24_WORKING/fs/proc: .root.o.flags
+Only in linux-2.4.24_WORKING/fs/qnx4: .depend
+Only in linux-2.4.24_WORKING/fs: quota.o
+Only in linux-2.4.24_WORKING/fs: .quota.o.flags
+Only in linux-2.4.24_WORKING/fs/ramfs: .depend
+Only in linux-2.4.24_WORKING/fs/ramfs: inode.o
+Only in linux-2.4.24_WORKING/fs/ramfs: .inode.o.flags
+Only in linux-2.4.24_WORKING/fs/ramfs: ramfs.o
+Only in linux-2.4.24_WORKING/fs/ramfs: .ramfs.o.flags
+Only in linux-2.4.24_WORKING/fs: readdir.o
+Only in linux-2.4.24_WORKING/fs: .readdir.o.flags
+Only in linux-2.4.24_WORKING/fs: read_write.o
+Only in linux-2.4.24_WORKING/fs: .read_write.o.flags
+Only in linux-2.4.24_WORKING/fs/reiserfs: .depend
+Only in linux-2.4.24_WORKING/fs/romfs: .depend
+Only in linux-2.4.24_WORKING/fs: select.o
+Only in linux-2.4.24_WORKING/fs: .select.o.flags
+Only in linux-2.4.24_WORKING/fs: seq_file.o
+Only in linux-2.4.24_WORKING/fs: .seq_file.o.flags
+Only in linux-2.4.24_WORKING/fs/smbfs: .depend
+Only in linux-2.4.24_WORKING/fs: stat.o
+Only in linux-2.4.24_WORKING/fs: .stat.o.flags
+Only in linux-2.4.24_WORKING/fs: super.o
+Only in linux-2.4.24_WORKING/fs: .super.o.flags
+Only in linux-2.4.24_WORKING/fs/sysv: .depend
+Only in linux-2.4.24_WORKING/fs/udf: .depend
+Only in linux-2.4.24_WORKING/fs/ufs: .depend
+Only in linux-2.4.24_WORKING/fs/umsdos: .depend
+Only in linux-2.4.24_WORKING/fs/vfat: .depend
+Only in linux-2.4.24_WORKING/fs: xattr.o
+Only in linux-2.4.24_WORKING/fs: .xattr.o.flags
+Only in linux-2.4.24_WORKING: .hdepend
+Only in linux-2.4.24_WORKING/include: asm
+diff -crB linux-2.4.24/include/asm-i386/unistd.h linux-2.4.24_WORKING/include/asm-i386/unistd.h
+*** linux-2.4.24/include/asm-i386/unistd.h	2002-11-28 18:53:15.000000000 -0500
+--- linux-2.4.24_WORKING/include/asm-i386/unistd.h	2013-03-25 21:38:10.000000000 -0400
+***************
+*** 257,262 ****
+--- 257,263 ----
+  #define __NR_alloc_hugepages	250
+  #define __NR_free_hugepages	251
+  #define __NR_exit_group		252
++ #define __NR_incshare		259
+  
+  /* user-visible error numbers are in the range -1 - -124: see <asm-i386/errno.h> */
+  
+***************
+*** 375,381 ****
+  static inline _syscall1(int,_exit,int,exitcode)
+  static inline _syscall3(pid_t,waitpid,pid_t,pid,int *,wait_stat,int,options)
+  static inline _syscall1(int,delete_module,const char *,name)
+! 
+  static inline pid_t wait(int * wait_stat)
+  {
+  	return waitpid(-1,wait_stat,0);
+--- 376,382 ----
+  static inline _syscall1(int,_exit,int,exitcode)
+  static inline _syscall3(pid_t,waitpid,pid_t,pid,int *,wait_stat,int,options)
+  static inline _syscall1(int,delete_module,const char *,name)
+! static inline _syscall0(int,incshare)
+  static inline pid_t wait(int * wait_stat)
+  {
+  	return waitpid(-1,wait_stat,0);
+Only in linux-2.4.24_WORKING/include: config
+Only in linux-2.4.24_WORKING/include/linux: autoconf.h
+Only in linux-2.4.24_WORKING/include/linux: compile.h
+Only in linux-2.4.24_WORKING/include/linux: modules
+Only in linux-2.4.24_WORKING/include/linux: modversions.h
+diff -crB linux-2.4.24/include/linux/sched.h linux-2.4.24_WORKING/include/linux/sched.h
+*** linux-2.4.24/include/linux/sched.h	2003-11-28 13:26:21.000000000 -0500
+--- linux-2.4.24_WORKING/include/linux/sched.h	2013-03-25 22:15:15.000000000 -0400
+***************
+*** 415,420 ****
+--- 415,424 ----
+  
+  /* journalling filesystem info */
+  	void *journal_info;
++ 
++ /*This process's share of its user CPU) */
++ 	atomic_t share;
++ 
+  };
+  
+  /*
+Only in linux-2.4.24_WORKING/include/linux: version.h
+Only in linux-2.4.24_WORKING/init: do_mounts.o
+Only in linux-2.4.24_WORKING/init: main.o
+Only in linux-2.4.24_WORKING/init: version.o
+Only in linux-2.4.24_WORKING/ipc: .depend
+Only in linux-2.4.24_WORKING/ipc: ipc.o
+Only in linux-2.4.24_WORKING/ipc: .ipc.o.flags
+Only in linux-2.4.24_WORKING/ipc: msg.o
+Only in linux-2.4.24_WORKING/ipc: .msg.o.flags
+Only in linux-2.4.24_WORKING/ipc: sem.o
+Only in linux-2.4.24_WORKING/ipc: .sem.o.flags
+Only in linux-2.4.24_WORKING/ipc: shm.o
+Only in linux-2.4.24_WORKING/ipc: .shm.o.flags
+Only in linux-2.4.24_WORKING/ipc: util.o
+Only in linux-2.4.24_WORKING/ipc: .util.o.flags
+Only in linux-2.4.24_WORKING/kernel: acct.o
+Only in linux-2.4.24_WORKING/kernel: .acct.o.flags
+Only in linux-2.4.24_WORKING/kernel: capability.o
+Only in linux-2.4.24_WORKING/kernel: .capability.o.flags
+Only in linux-2.4.24_WORKING/kernel: context.o
+Only in linux-2.4.24_WORKING/kernel: .context.o.flags
+Only in linux-2.4.24_WORKING/kernel: .depend
+Only in linux-2.4.24_WORKING/kernel: dma.o
+Only in linux-2.4.24_WORKING/kernel: .dma.o.flags
+Only in linux-2.4.24_WORKING/kernel: exec_domain.o
+Only in linux-2.4.24_WORKING/kernel: .exec_domain.o.flags
+diff -crB linux-2.4.24/kernel/exit.c linux-2.4.24_WORKING/kernel/exit.c
+*** linux-2.4.24/kernel/exit.c	2002-11-28 18:53:15.000000000 -0500
+--- linux-2.4.24_WORKING/kernel/exit.c	2013-03-25 22:20:31.000000000 -0400
+***************
+*** 47,52 ****
+--- 47,54 ----
+  		task_unlock(p);
+  #endif
+  		atomic_dec(&p->user->processes);
++ 		if(atomic_read(&p->share)==2)
++ 			atomic_dec(&p->user->processes);
+  		free_uid(p->user);
+  		unhash_process(p);
+  
+Only in linux-2.4.24_WORKING/kernel: exit.o
+Only in linux-2.4.24_WORKING/kernel: .exit.o.flags
+diff -crB linux-2.4.24/kernel/fork.c linux-2.4.24_WORKING/kernel/fork.c
+*** linux-2.4.24/kernel/fork.c	2003-11-28 13:26:21.000000000 -0500
+--- linux-2.4.24_WORKING/kernel/fork.c	2013-03-25 22:15:55.000000000 -0400
+***************
+*** 714,719 ****
+--- 714,723 ----
+  
+  	p->it_real_value = p->it_virt_value = p->it_prof_value = 0;
+  	p->it_real_incr = p->it_virt_incr = p->it_prof_incr = 0;
++ 
++ 	//Initialize share to 1
++ 	atomic_set(&p->share,1);
++ 	
+  	init_timer(&p->real_timer);
+  	p->real_timer.data = (unsigned long) p;
+  
+Only in linux-2.4.24_WORKING/kernel: fork.o
+Only in linux-2.4.24_WORKING/kernel: .fork.o.flags
+Only in linux-2.4.24_WORKING/kernel: info.o
+Only in linux-2.4.24_WORKING/kernel: .info.o.flags
+Only in linux-2.4.24_WORKING/kernel: itimer.o
+Only in linux-2.4.24_WORKING/kernel: .itimer.o.flags
+Only in linux-2.4.24_WORKING/kernel: kernel.o
+Only in linux-2.4.24_WORKING/kernel: .kernel.o.flags
+Only in linux-2.4.24_WORKING/kernel: kmod.o
+Only in linux-2.4.24_WORKING/kernel: .kmod.o.flags
+Only in linux-2.4.24_WORKING/kernel: ksyms.o
+Only in linux-2.4.24_WORKING/kernel: .ksyms.o.flags
+Only in linux-2.4.24_WORKING/kernel: module.o
+Only in linux-2.4.24_WORKING/kernel: .module.o.flags
+Only in linux-2.4.24_WORKING/kernel: panic.o
+Only in linux-2.4.24_WORKING/kernel: .panic.o.flags
+Only in linux-2.4.24_WORKING/kernel: pm.o
+Only in linux-2.4.24_WORKING/kernel: .pm.o.flags
+Only in linux-2.4.24_WORKING/kernel: printk.o
+Only in linux-2.4.24_WORKING/kernel: .printk.o.flags
+Only in linux-2.4.24_WORKING/kernel: ptrace.o
+Only in linux-2.4.24_WORKING/kernel: .ptrace.o.flags
+Only in linux-2.4.24_WORKING/kernel: resource.o
+Only in linux-2.4.24_WORKING/kernel: .resource.o.flags
+diff -crB linux-2.4.24/kernel/sched.c linux-2.4.24_WORKING/kernel/sched.c
+*** linux-2.4.24/kernel/sched.c	2003-11-28 13:26:21.000000000 -0500
+--- linux-2.4.24_WORKING/kernel/sched.c	2013-03-25 22:34:40.000000000 -0400
+***************
+*** 602,608 ****
+  	 * Default process to select..
+  	 */
+  	next = idle_task(this_cpu);
+! 	c = -1000;
+  	list_for_each(tmp, &runqueue_head) {
+  		p = list_entry(tmp, struct task_struct, run_list);
+  		if (can_schedule(p, this_cpu)) {
+--- 602,617 ----
+  	 * Default process to select..
+  	 */
+  	next = idle_task(this_cpu);
+! 	c= -1000;
+! 
+! 	//Let's count the number of processes!
+! 	int procCount=0;
+! 	struct task_struct *q;
+! 	for_each_task(q)
+! 	{
+! 		procCount++;
+! 	}
+! 	
+  	list_for_each(tmp, &runqueue_head) {
+  		p = list_entry(tmp, struct task_struct, run_list);
+  		if (can_schedule(p, this_cpu)) {
+***************
+*** 618,625 ****
+  
+  		spin_unlock_irq(&runqueue_lock);
+  		read_lock(&tasklist_lock);
+! 		for_each_task(p)
+! 			p->counter = (p->counter >> 1) + NICE_TO_TICKS(p->nice);
+  		read_unlock(&tasklist_lock);
+  		spin_lock_irq(&runqueue_lock);
+  		goto repeat_schedule;
+--- 627,638 ----
+  
+  		spin_unlock_irq(&runqueue_lock);
+  		read_lock(&tasklist_lock);
+! 		for_each_task(p){
+! 			p->counter = atomic_read(&p->share)*procCount/atomic_read(&p->user->processes);
+! 			if(p->counter==0)
+! 				p->counter=1;
+! 			
+! 		}
+  		read_unlock(&tasklist_lock);
+  		spin_lock_irq(&runqueue_lock);
+  		goto repeat_schedule;
+Only in linux-2.4.24_WORKING/kernel: sched.o
+Only in linux-2.4.24_WORKING/kernel: .sched.o.flags
+Only in linux-2.4.24_WORKING/kernel: signal.o
+Only in linux-2.4.24_WORKING/kernel: .signal.o.flags
+Only in linux-2.4.24_WORKING/kernel: softirq.o
+Only in linux-2.4.24_WORKING/kernel: .softirq.o.flags
+diff -crB linux-2.4.24/kernel/sys.c linux-2.4.24_WORKING/kernel/sys.c
+*** linux-2.4.24/kernel/sys.c	2003-11-28 13:26:21.000000000 -0500
+--- linux-2.4.24_WORKING/kernel/sys.c	2013-03-25 22:49:36.000000000 -0400
+***************
+*** 1283,1288 ****
+--- 1283,1305 ----
+  	return error;
+  }
+  
++ /* Our increased share system call is defined here!
++  */
++ asmlinkage int sys_incshare()
++ {
++ 	struct task_struct *p;
++ 	//Find the current task
++ 	for_each_task(p) {
++ 		if (!proc_sel(p, 0, 0))
++ 			continue;
++ 		atomic_inc(&p->share);
++ 		atomic_inc(&p->user->processes);
++ 	}
++ 	return 0;
++ }
++ 
++ 	
++ 
+  EXPORT_SYMBOL(notifier_chain_register);
+  EXPORT_SYMBOL(notifier_chain_unregister);
+  EXPORT_SYMBOL(notifier_call_chain);
+Only in linux-2.4.24_WORKING/kernel: sysctl.o
+Only in linux-2.4.24_WORKING/kernel: .sysctl.o.flags
+Only in linux-2.4.24_WORKING/kernel: sys.o
+Only in linux-2.4.24_WORKING/kernel: .sys.o.flags
+Only in linux-2.4.24_WORKING/kernel: time.o
+Only in linux-2.4.24_WORKING/kernel: .time.o.flags
+Only in linux-2.4.24_WORKING/kernel: timer.o
+Only in linux-2.4.24_WORKING/kernel: .timer.o.flags
+Only in linux-2.4.24_WORKING/kernel: uid16.o
+Only in linux-2.4.24_WORKING/kernel: .uid16.o.flags
+Only in linux-2.4.24_WORKING/kernel: user.o
+Only in linux-2.4.24_WORKING/kernel: .user.o.flags
+Only in linux-2.4.24_WORKING/lib: brlock.o
+Only in linux-2.4.24_WORKING/lib: .brlock.o.flags
+Only in linux-2.4.24_WORKING/lib: bust_spinlocks.o
+Only in linux-2.4.24_WORKING/lib: .bust_spinlocks.o.flags
+Only in linux-2.4.24_WORKING/lib: cmdline.o
+Only in linux-2.4.24_WORKING/lib: .cmdline.o.flags
+Only in linux-2.4.24_WORKING/lib: crc32.o
+Only in linux-2.4.24_WORKING/lib: .crc32.o.flags
+Only in linux-2.4.24_WORKING/lib: crc32table.h
+Only in linux-2.4.24_WORKING/lib: ctype.o
+Only in linux-2.4.24_WORKING/lib: .ctype.o.flags
+Only in linux-2.4.24_WORKING/lib: .depend
+Only in linux-2.4.24_WORKING/lib: dump_stack.o
+Only in linux-2.4.24_WORKING/lib: .dump_stack.o.flags
+Only in linux-2.4.24_WORKING/lib: errno.o
+Only in linux-2.4.24_WORKING/lib: .errno.o.flags
+Only in linux-2.4.24_WORKING/lib: gen_crc32table
+Only in linux-2.4.24_WORKING/lib: lib.a
+Only in linux-2.4.24_WORKING/lib: .lib.a.flags
+Only in linux-2.4.24_WORKING/lib: rbtree.o
+Only in linux-2.4.24_WORKING/lib: .rbtree.o.flags
+Only in linux-2.4.24_WORKING/lib: rwsem.o
+Only in linux-2.4.24_WORKING/lib: .rwsem.o.flags
+Only in linux-2.4.24_WORKING/lib: string.o
+Only in linux-2.4.24_WORKING/lib: .string.o.flags
+Only in linux-2.4.24_WORKING/lib: vsprintf.o
+Only in linux-2.4.24_WORKING/lib: .vsprintf.o.flags
+Only in linux-2.4.24_WORKING/lib/zlib_deflate: .depend
+Only in linux-2.4.24_WORKING/lib/zlib_inflate: .depend
+diff -crB linux-2.4.24/Makefile linux-2.4.24_WORKING/Makefile
+*** linux-2.4.24/Makefile	2004-01-05 08:53:56.000000000 -0500
+--- linux-2.4.24_WORKING/Makefile	2013-03-25 21:38:10.000000000 -0400
+***************
+*** 1,7 ****
+  VERSION = 2
+  PATCHLEVEL = 4
+  SUBLEVEL = 24
+! EXTRAVERSION =
+  
+  KERNELRELEASE=$(VERSION).$(PATCHLEVEL).$(SUBLEVEL)$(EXTRAVERSION)
+  
+--- 1,7 ----
+  VERSION = 2
+  PATCHLEVEL = 4
+  SUBLEVEL = 24
+! EXTRAVERSION = test
+  
+  KERNELRELEASE=$(VERSION).$(PATCHLEVEL).$(SUBLEVEL)$(EXTRAVERSION)
+  
+Only in linux-2.4.24_WORKING/mm: bootmem.o
+Only in linux-2.4.24_WORKING/mm: .bootmem.o.flags
+Only in linux-2.4.24_WORKING/mm: .depend
+Only in linux-2.4.24_WORKING/mm: filemap.o
+Only in linux-2.4.24_WORKING/mm: .filemap.o.flags
+Only in linux-2.4.24_WORKING/mm: memory.o
+Only in linux-2.4.24_WORKING/mm: .memory.o.flags
+Only in linux-2.4.24_WORKING/mm: mlock.o
+Only in linux-2.4.24_WORKING/mm: .mlock.o.flags
+Only in linux-2.4.24_WORKING/mm: mmap.o
+Only in linux-2.4.24_WORKING/mm: .mmap.o.flags
+Only in linux-2.4.24_WORKING/mm: mm.o
+Only in linux-2.4.24_WORKING/mm: .mm.o.flags
+Only in linux-2.4.24_WORKING/mm: mprotect.o
+Only in linux-2.4.24_WORKING/mm: .mprotect.o.flags
+Only in linux-2.4.24_WORKING/mm: mremap.o
+Only in linux-2.4.24_WORKING/mm: .mremap.o.flags
+Only in linux-2.4.24_WORKING/mm: numa.o
+Only in linux-2.4.24_WORKING/mm: .numa.o.flags
+Only in linux-2.4.24_WORKING/mm: oom_kill.o
+Only in linux-2.4.24_WORKING/mm: .oom_kill.o.flags
+Only in linux-2.4.24_WORKING/mm: page_alloc.o
+Only in linux-2.4.24_WORKING/mm: .page_alloc.o.flags
+Only in linux-2.4.24_WORKING/mm: page_io.o
+Only in linux-2.4.24_WORKING/mm: .page_io.o.flags
+Only in linux-2.4.24_WORKING/mm: shmem.o
+Only in linux-2.4.24_WORKING/mm: .shmem.o.flags
+Only in linux-2.4.24_WORKING/mm: slab.o
+Only in linux-2.4.24_WORKING/mm: .slab.o.flags
+Only in linux-2.4.24_WORKING/mm: swapfile.o
+Only in linux-2.4.24_WORKING/mm: .swapfile.o.flags
+Only in linux-2.4.24_WORKING/mm: swap.o
+Only in linux-2.4.24_WORKING/mm: .swap.o.flags
+Only in linux-2.4.24_WORKING/mm: swap_state.o
+Only in linux-2.4.24_WORKING/mm: .swap_state.o.flags
+Only in linux-2.4.24_WORKING/mm: vmalloc.o
+Only in linux-2.4.24_WORKING/mm: .vmalloc.o.flags
+Only in linux-2.4.24_WORKING/mm: vmscan.o
+Only in linux-2.4.24_WORKING/mm: .vmscan.o.flags
+Only in linux-2.4.24_WORKING/net/802: 802.o
+Only in linux-2.4.24_WORKING/net/802: .802.o.flags
+Only in linux-2.4.24_WORKING/net/802: .depend
+Only in linux-2.4.24_WORKING/net/802: p8023.o
+Only in linux-2.4.24_WORKING/net/802: .p8023.o.flags
+Only in linux-2.4.24_WORKING/net/802: sysctl_net_802.o
+Only in linux-2.4.24_WORKING/net/802: .sysctl_net_802.o.flags
+Only in linux-2.4.24_WORKING/net/8021q: .depend
+Only in linux-2.4.24_WORKING/net/appletalk: .depend
+Only in linux-2.4.24_WORKING/net/atm: .depend
+Only in linux-2.4.24_WORKING/net/ax25: .depend
+Only in linux-2.4.24_WORKING/net/bluetooth/bnep: .depend
+Only in linux-2.4.24_WORKING/net/bluetooth/cmtp: .depend
+Only in linux-2.4.24_WORKING/net/bluetooth: .depend
+Only in linux-2.4.24_WORKING/net/bluetooth/rfcomm: .depend
+Only in linux-2.4.24_WORKING/net/bridge: .depend
+Only in linux-2.4.24_WORKING/net/core: core.o
+Only in linux-2.4.24_WORKING/net/core: .core.o.flags
+Only in linux-2.4.24_WORKING/net/core: datagram.o
+Only in linux-2.4.24_WORKING/net/core: .datagram.o.flags
+Only in linux-2.4.24_WORKING/net/core: .depend
+Only in linux-2.4.24_WORKING/net/core: dev_mcast.o
+Only in linux-2.4.24_WORKING/net/core: .dev_mcast.o.flags
+Only in linux-2.4.24_WORKING/net/core: dev.o
+Only in linux-2.4.24_WORKING/net/core: .dev.o.flags
+Only in linux-2.4.24_WORKING/net/core: dst.o
+Only in linux-2.4.24_WORKING/net/core: .dst.o.flags
+Only in linux-2.4.24_WORKING/net/core: ethtool.o
+Only in linux-2.4.24_WORKING/net/core: .ethtool.o.flags
+Only in linux-2.4.24_WORKING/net/core: iovec.o
+Only in linux-2.4.24_WORKING/net/core: .iovec.o.flags
+Only in linux-2.4.24_WORKING/net/core: neighbour.o
+Only in linux-2.4.24_WORKING/net/core: .neighbour.o.flags
+Only in linux-2.4.24_WORKING/net/core: rtnetlink.o
+Only in linux-2.4.24_WORKING/net/core: .rtnetlink.o.flags
+Only in linux-2.4.24_WORKING/net/core: scm.o
+Only in linux-2.4.24_WORKING/net/core: .scm.o.flags
+Only in linux-2.4.24_WORKING/net/core: skbuff.o
+Only in linux-2.4.24_WORKING/net/core: .skbuff.o.flags
+Only in linux-2.4.24_WORKING/net/core: sock.o
+Only in linux-2.4.24_WORKING/net/core: .sock.o.flags
+Only in linux-2.4.24_WORKING/net/core: sysctl_net_core.o
+Only in linux-2.4.24_WORKING/net/core: .sysctl_net_core.o.flags
+Only in linux-2.4.24_WORKING/net/core: utils.o
+Only in linux-2.4.24_WORKING/net/core: .utils.o.flags
+Only in linux-2.4.24_WORKING/net/core: wireless.o
+Only in linux-2.4.24_WORKING/net/core: .wireless.o.flags
+Only in linux-2.4.24_WORKING/net/decnet: .depend
+Only in linux-2.4.24_WORKING/net: .depend
+Only in linux-2.4.24_WORKING/net/econet: .depend
+Only in linux-2.4.24_WORKING/net/ethernet: .depend
+Only in linux-2.4.24_WORKING/net/ethernet: ethernet.o
+Only in linux-2.4.24_WORKING/net/ethernet: .ethernet.o.flags
+Only in linux-2.4.24_WORKING/net/ethernet: eth.o
+Only in linux-2.4.24_WORKING/net/ethernet: .eth.o.flags
+Only in linux-2.4.24_WORKING/net/ethernet: sysctl_net_ether.o
+Only in linux-2.4.24_WORKING/net/ethernet: .sysctl_net_ether.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: af_inet.o
+Only in linux-2.4.24_WORKING/net/ipv4: .af_inet.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: arp.o
+Only in linux-2.4.24_WORKING/net/ipv4: .arp.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: .depend
+Only in linux-2.4.24_WORKING/net/ipv4: devinet.o
+Only in linux-2.4.24_WORKING/net/ipv4: .devinet.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: fib_frontend.o
+Only in linux-2.4.24_WORKING/net/ipv4: .fib_frontend.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: fib_hash.o
+Only in linux-2.4.24_WORKING/net/ipv4: .fib_hash.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: fib_semantics.o
+Only in linux-2.4.24_WORKING/net/ipv4: .fib_semantics.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: icmp.o
+Only in linux-2.4.24_WORKING/net/ipv4: .icmp.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: igmp.o
+Only in linux-2.4.24_WORKING/net/ipv4: .igmp.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: inetpeer.o
+Only in linux-2.4.24_WORKING/net/ipv4: .inetpeer.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: ip_forward.o
+Only in linux-2.4.24_WORKING/net/ipv4: .ip_forward.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: ip_fragment.o
+Only in linux-2.4.24_WORKING/net/ipv4: .ip_fragment.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: ip_input.o
+Only in linux-2.4.24_WORKING/net/ipv4: .ip_input.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: ip_options.o
+Only in linux-2.4.24_WORKING/net/ipv4: .ip_options.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: ip_output.o
+Only in linux-2.4.24_WORKING/net/ipv4: .ip_output.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: ip_sockglue.o
+Only in linux-2.4.24_WORKING/net/ipv4: .ip_sockglue.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: ipv4.o
+Only in linux-2.4.24_WORKING/net/ipv4: .ipv4.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4/netfilter: .depend
+Only in linux-2.4.24_WORKING/net/ipv4: proc.o
+Only in linux-2.4.24_WORKING/net/ipv4: .proc.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: protocol.o
+Only in linux-2.4.24_WORKING/net/ipv4: .protocol.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: raw.o
+Only in linux-2.4.24_WORKING/net/ipv4: .raw.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: route.o
+Only in linux-2.4.24_WORKING/net/ipv4: .route.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: sysctl_net_ipv4.o
+Only in linux-2.4.24_WORKING/net/ipv4: .sysctl_net_ipv4.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: tcp_diag.o
+Only in linux-2.4.24_WORKING/net/ipv4: .tcp_diag.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: tcp_input.o
+Only in linux-2.4.24_WORKING/net/ipv4: .tcp_input.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: tcp_ipv4.o
+Only in linux-2.4.24_WORKING/net/ipv4: .tcp_ipv4.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: tcp_minisocks.o
+Only in linux-2.4.24_WORKING/net/ipv4: .tcp_minisocks.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: tcp.o
+Only in linux-2.4.24_WORKING/net/ipv4: .tcp.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: tcp_output.o
+Only in linux-2.4.24_WORKING/net/ipv4: .tcp_output.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: tcp_timer.o
+Only in linux-2.4.24_WORKING/net/ipv4: .tcp_timer.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: udp.o
+Only in linux-2.4.24_WORKING/net/ipv4: .udp.o.flags
+Only in linux-2.4.24_WORKING/net/ipv4: utils.o
+Only in linux-2.4.24_WORKING/net/ipv4: .utils.o.flags
+Only in linux-2.4.24_WORKING/net/ipv6: .depend
+Only in linux-2.4.24_WORKING/net/ipx: .depend
+Only in linux-2.4.24_WORKING/net/irda: .depend
+Only in linux-2.4.24_WORKING/net/irda/ircomm: .depend
+Only in linux-2.4.24_WORKING/net/irda/irlan: .depend
+Only in linux-2.4.24_WORKING/net/irda/irnet: .depend
+Only in linux-2.4.24_WORKING/net/khttpd: .depend
+Only in linux-2.4.24_WORKING/net/lapb: .depend
+Only in linux-2.4.24_WORKING/net/netlink: af_netlink.o
+Only in linux-2.4.24_WORKING/net/netlink: .af_netlink.o.flags
+Only in linux-2.4.24_WORKING/net/netlink: .depend
+Only in linux-2.4.24_WORKING/net/netlink: netlink.o
+Only in linux-2.4.24_WORKING/net/netlink: .netlink.o.flags
+Only in linux-2.4.24_WORKING/net/netrom: .depend
+Only in linux-2.4.24_WORKING/net: netsyms.o
+Only in linux-2.4.24_WORKING/net: .netsyms.o.flags
+Only in linux-2.4.24_WORKING/net: network.o
+Only in linux-2.4.24_WORKING/net: .network.o.flags
+Only in linux-2.4.24_WORKING/net/packet: af_packet.o
+Only in linux-2.4.24_WORKING/net/packet: .af_packet.o.flags
+Only in linux-2.4.24_WORKING/net/packet: .depend
+Only in linux-2.4.24_WORKING/net/packet: packet.o
+Only in linux-2.4.24_WORKING/net/packet: .packet.o.flags
+Only in linux-2.4.24_WORKING/net/rose: .depend
+Only in linux-2.4.24_WORKING/net/sched: .depend
+Only in linux-2.4.24_WORKING/net/sched: sched.o
+Only in linux-2.4.24_WORKING/net/sched: .sched.o.flags
+Only in linux-2.4.24_WORKING/net/sched: sch_generic.o
+Only in linux-2.4.24_WORKING/net/sched: .sch_generic.o.flags
+Only in linux-2.4.24_WORKING/net/sctp: .depend
+Only in linux-2.4.24_WORKING/net: socket.o
+Only in linux-2.4.24_WORKING/net: .socket.o.flags
+Only in linux-2.4.24_WORKING/net/sunrpc: auth_null.o
+Only in linux-2.4.24_WORKING/net/sunrpc: .auth_null.o.flags
+Only in linux-2.4.24_WORKING/net/sunrpc: auth.o
+Only in linux-2.4.24_WORKING/net/sunrpc: .auth.o.flags
+Only in linux-2.4.24_WORKING/net/sunrpc: auth_unix.o
+Only in linux-2.4.24_WORKING/net/sunrpc: .auth_unix.o.flags
+Only in linux-2.4.24_WORKING/net/sunrpc: clnt.o
+Only in linux-2.4.24_WORKING/net/sunrpc: .clnt.o.flags
+Only in linux-2.4.24_WORKING/net/sunrpc: .depend
+Only in linux-2.4.24_WORKING/net/sunrpc: pmap_clnt.o
+Only in linux-2.4.24_WORKING/net/sunrpc: .pmap_clnt.o.flags
+Only in linux-2.4.24_WORKING/net/sunrpc: sched.o
+Only in linux-2.4.24_WORKING/net/sunrpc: .sched.o.flags
+Only in linux-2.4.24_WORKING/net/sunrpc: stats.o
+Only in linux-2.4.24_WORKING/net/sunrpc: .stats.o.flags
+Only in linux-2.4.24_WORKING/net/sunrpc: sunrpc.o
+Only in linux-2.4.24_WORKING/net/sunrpc: .sunrpc.o.flags
+Only in linux-2.4.24_WORKING/net/sunrpc: sunrpc_syms.o
+Only in linux-2.4.24_WORKING/net/sunrpc: .sunrpc_syms.o.flags
+Only in linux-2.4.24_WORKING/net/sunrpc: svcauth.o
+Only in linux-2.4.24_WORKING/net/sunrpc: .svcauth.o.flags
+Only in linux-2.4.24_WORKING/net/sunrpc: svc.o
+Only in linux-2.4.24_WORKING/net/sunrpc: .svc.o.flags
+Only in linux-2.4.24_WORKING/net/sunrpc: svcsock.o
+Only in linux-2.4.24_WORKING/net/sunrpc: .svcsock.o.flags
+Only in linux-2.4.24_WORKING/net/sunrpc: sysctl.o
+Only in linux-2.4.24_WORKING/net/sunrpc: .sysctl.o.flags
+Only in linux-2.4.24_WORKING/net/sunrpc: timer.o
+Only in linux-2.4.24_WORKING/net/sunrpc: .timer.o.flags
+Only in linux-2.4.24_WORKING/net/sunrpc: xdr.o
+Only in linux-2.4.24_WORKING/net/sunrpc: .xdr.o.flags
+Only in linux-2.4.24_WORKING/net/sunrpc: xprt.o
+Only in linux-2.4.24_WORKING/net/sunrpc: .xprt.o.flags
+Only in linux-2.4.24_WORKING/net: sysctl_net.o
+Only in linux-2.4.24_WORKING/net: .sysctl_net.o.flags
+Only in linux-2.4.24_WORKING/net/unix: af_unix.o
+Only in linux-2.4.24_WORKING/net/unix: .af_unix.o.flags
+Only in linux-2.4.24_WORKING/net/unix: .depend
+Only in linux-2.4.24_WORKING/net/unix: garbage.o
+Only in linux-2.4.24_WORKING/net/unix: .garbage.o.flags
+Only in linux-2.4.24_WORKING/net/unix: sysctl_net_unix.o
+Only in linux-2.4.24_WORKING/net/unix: .sysctl_net_unix.o.flags
+Only in linux-2.4.24_WORKING/net/unix: unix.o
+Only in linux-2.4.24_WORKING/net/unix: .unix.o.flags
+Only in linux-2.4.24_WORKING/net/wanrouter: .depend
+Only in linux-2.4.24_WORKING/net/x25: .depend
+Only in linux-2.4.24_WORKING/scripts: mkdep
+Only in linux-2.4.24_WORKING/scripts: split-include
+Only in linux-2.4.24_WORKING: System.map
+Only in linux-2.4.24_WORKING: .version
+Only in linux-2.4.24_WORKING: vmlinux
