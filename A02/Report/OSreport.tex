@@ -98,7 +98,8 @@ Finally, in order to implement the system call, we used an \texttt{atomic\_t} ca
 
 counter$ = \text{share}\frac{\text{total number procs}}{\text{this user's number of procs}}$
 
-It is clear that if no process calls incshare, the desired behavior is still observed. If a process calls incshare, it is clear that only that user's processes have their counters altered and that process will get twice as much as the other process for that user.
+It is clear that if no process calls incshare, the desired behavior is still observed. If a process calls incshare, it is clear that only that user's processes have their counters altered and that process will get twice as much as the other process for that user. \\* 
+\\*
 
 {\textit{Defining the system call via \textbf{entry.S}, \textbf{unistd.h}, and \textbf{sys.c} :}} \\
 
