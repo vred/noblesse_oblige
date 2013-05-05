@@ -85,9 +85,7 @@ char* remote_getattr(const char *path){
 	strcpy(full_path,root_path);
 	strcat(full_path,path);
 	
-	if(lstat(full_path,stat_buf)!=0){
-		
-	}
+	lstat(full_path,stat_buf);
 		
 	char* status = (char*)calloc(sizeof(struct stat),sizeof(char));
 	sprintf(status,"%d, %d, %d, %d, %d, %d, %d, %d, %d, %d",stat_buf->st_mode,stat_buf->st_ino,stat_buf->st_dev,stat_buf->st_uid,
@@ -99,7 +97,7 @@ char* remote_getattr(const char *path){
 char* remote_readdir(const char *path){
 	DIR *dir;
 	char* entry_list = (char*)malloc(1);
-	struct dirent *ent;
+	struct dirent *ent = (struct dirent*)malloc(sizeof(struct dirent));
 	
 	char* full_path = (char*)malloc(strlen(path)+strlen(root_path)+1);
 	strcpy(full_path,root_path);

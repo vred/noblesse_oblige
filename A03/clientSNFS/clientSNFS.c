@@ -97,7 +97,7 @@ static int SNFS_getattr(const char *path, struct stat *stbuf){
 	stbuf->st_size = (off_t)atoi(token);
 	token = strtok(NULL, " ,");	
 	if(stbuf->st_mode<=0||stbuf->st_uid<=0||stbuf->st_gid<=0)
-		retstat=-1;
+		retstat=-ENOENT;
 	return retstat;
 }
 
@@ -151,6 +151,9 @@ static int SNFS_opendir(const char *path, struct fuse_file_info *fi){
 	//request the directory pointer from the server
 	sendRequestToServer(request, response, 1024);
 	fi->fh = (intptr_t) atoi(response);
+	if(atoi(response)==0){
+		retstat=-ENOENT;
+	}
 	return retstat;
 }
 
@@ -174,7 +177,7 @@ int SNFS_mkdir(const char *path, mode_t mode)
    
 	char* request = calloc(1000,sizeof(char));
 	char* response = calloc(11111,sizeof(char));
-	strcpy(request,"opendir, ");
+	strcpy(request,"mkdir, ");
 	strcat(request, path);
 	char mode_string[32];
 	sprintf(mode_string,", %d",mode);
@@ -191,6 +194,7 @@ static struct fuse_operations SNFS_oper = {
 	//.write		= SNFS_write,
 	//.close		= SNFS_close,
 	//.truncate	= SNFS_truncate,
+	.read		= SNFS_read,
 	.opendir	= SNFS_opendir,
 	.readdir	= SNFS_readdir,
 	.releasedir	= SNFS_releasedir,
