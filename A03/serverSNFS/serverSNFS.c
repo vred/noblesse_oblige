@@ -85,7 +85,10 @@ char* remote_getattr(const char *path){
 	strcpy(full_path,root_path);
 	strcat(full_path,path);
 	
-	lstat(full_path,stat_buf);
+	if(lstat(full_path,stat_buf)!=0){
+		
+	}
+		
 	char* status = (char*)calloc(sizeof(struct stat),sizeof(char));
 	sprintf(status,"%d, %d, %d, %d, %d, %d, %d, %d, %d, %d",stat_buf->st_mode,stat_buf->st_ino,stat_buf->st_dev,stat_buf->st_uid,
 						stat_buf->st_gid,stat_buf->st_atime,stat_buf->st_ctime,
