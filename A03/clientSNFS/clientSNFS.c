@@ -66,13 +66,36 @@ char* sendRequestToServer(char* request_data, char* buf, int size){
 static int SNFS_getattr(const char *path, struct stat *stbuf){
 	
 	int retstat = 0;
-	char* request = malloc(1000);
-	char* response = malloc(11111);
+	memset(stbuf, 0, sizeof(struct stat));
+	char* request = calloc(1000,sizeof(char));
+	char* response = calloc(11111,sizeof(char));
 	strcpy(request,"getattr, ");
 	strcat(request, path);
-	//request all the things in the directory from the server
-	sendRequestToServer(request, response, 1024);
-	memcpy(stbuf,response,sizeof(response));
+	//request the attributes of the path
+	sendRequestToServer(request, response, 4096);
+	//call filler on each of those things
+	char* token = strtok(response, " ,");
+	stbuf->st_mode = (mode_t)atoi(token);
+	token = strtok(NULL, " ,");
+	stbuf->st_ino = (ino_t)atoi(token);
+	token = strtok(NULL, " ,");
+	stbuf->st_dev = (dev_t)atoi(token);
+	token = strtok(NULL, " ,");
+	stbuf->st_uid = (uid_t)atoi(token);
+	token = strtok(NULL, " ,");
+	stbuf->st_gid = (gid_t)atoi(token);
+	token = strtok(NULL, " ,");
+	stbuf->st_atime = (time_t)atoi(token);
+	token = strtok(NULL, " ,");
+	stbuf->st_ctime = (time_t)atoi(token);
+	token = strtok(NULL, " ,");
+	stbuf->st_mtime = (time_t)atoi(token);
+	token = strtok(NULL, " ,");
+	stbuf->st_nlink = (nlink_t)atoi(token);
+	token = strtok(NULL, " ,");
+	stbuf->st_size = (off_t)atoi(token);
+	token = strtok(NULL, " ,");	
+	
 	return retstat;
 }
 
@@ -82,8 +105,8 @@ static int SNFS_getattr(const char *path, struct stat *stbuf){
 static int SNFS_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
 			 off_t offset, struct fuse_file_info *fi){
 	int retstat = 0;
-	char* request = malloc(1000);
-	char* response = malloc(11111);
+	char* request = calloc(1000,sizeof(char));
+	char* response = calloc(11111,sizeof(char));
 	strcpy(request,"readdir, ");
 	strcat(request, path);
 	//request all the things in the directory from the server

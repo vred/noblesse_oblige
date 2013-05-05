@@ -15,13 +15,13 @@
 
 //contains the port where the server is listening
 int port;
+char root_path[1024];
 
 char* request_handler(char* request){
 
-
 	char* tokenreq = strtok(request," ,");
 	char* firstarg = tokenreq;
-
+	//switch on first argument of request which is system call name
 	if( !strcmp(firstarg,"readdir") )
 	{
 		tokenreq = strtok(NULL, " ,");
@@ -30,15 +30,17 @@ char* request_handler(char* request){
 		tokenreq = strtok(NULL, " ,");
 		return remote_getattr(tokenreq);
 	}
-	//switch on first argument of request which is system call name
 	
 }
 
 char* remote_getattr(const char *path){
 	struct stat* stat_buf = (struct stat*)malloc(sizeof(struct stat));
 	lstat(path,stat_buf);
-	char* status = malloc(sizeof(stat_buf));
-	memcpy(status, stat_buf, sizeof(struct stat));
+	printf("stats: %08x %d %d %d\n", stat_buf->st_mode, stat_buf->st_ino, stat_buf->st_nlink,stat_buf->st_mtime);
+	char* status = (char*)calloc(sizeof(struct stat),sizeof(char));
+	sprintf(status,"%d, %d, %d, %d, %d, %d, %d, %d, %d, %d",stat_buf->st_mode,stat_buf->st_ino,stat_buf->st_dev,stat_buf->st_uid,
+						stat_buf->st_gid,stat_buf->st_atime,stat_buf->st_ctime,
+							stat_buf->st_mtime,stat_buf->st_nlink,stat_buf->st_size);
 	return status;
 }
 
@@ -49,7 +51,7 @@ char* remote_readdir(const char *path){
 	if ((dir = opendir (path)) != NULL) {
 	  /* print all the files and directories within directory */
 	  while ((ent = readdir (dir)) != NULL) {
-	    entry_list = (char*)realloc(entry_list,sizeof(remote_readdir)+strlen(ent->d_name)+2);
+	    entry_list = (char*)realloc(entry_list,strlen(entry_list)+strlen(ent->d_name)+2);
 	    entry_list = strcat(entry_list,", ");
 	    entry_list = strcat(entry_list,ent->d_name);
 	  }
@@ -128,7 +130,7 @@ int main()
               
               printf("Got my response, it's %d big and its %s\n",strlen(response),response);
               
-              send(connected,response,strlen(response),0);
+              send(connected,response,4096,0);
 			
 				printf("And I sent it\n");
 			 // printf("\nClient wants to read file = %s " , recv_data);
