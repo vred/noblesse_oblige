@@ -18,7 +18,7 @@ int port;
 char* root_path;
 
 char* request_handler(char* request){
-
+	char* request_copy = strdup(request);
 	char* tokenreq = strtok(request," ,");
 	char* firstarg = tokenreq;
 	//switch on first argument of request which is system call name
@@ -39,9 +39,65 @@ char* request_handler(char* request){
 		tokenreq = strtok(NULL, " ,");
 		mode_t mode = (mode_t)atoi(strtok(NULL, " ,"));
 		return remote_mkdir(tokenreq,mode);
+	} else if( !strcmp(firstarg,"read")){
+		tokenreq = strtok(NULL, " ,");
+		size_t size = (size_t)atoi(strtok(NULL, " ,"));
+		off_t offset = (off_t)atoi(strtok(NULL, " ,"));
+		return remote_read(tokenreq,size,offset);
+	} else if( !strcmp(firstarg,"open")){
+		tokenreq = strtok(NULL, " ,");
+		int flags = atoi(strtok(NULL, " ,"));
+		return remote_open(tokenreq, flags);
+	} else if( !strcmp(firstarg,"release")){
+		tokenreq = strtok(NULL, " ,");
+		return remote_release(tokenreq);
+	} else if( !strcmp(firstarg,"write")){
+		tokenreq = strtok(NULL, " ,");
+		size_t size = (size_t)atoi(strtok(NULL, " ,"));
+		off_t offset = (off_t)atoi(strtok(NULL, " ,"));
+		//cut off the string so it just has the info to be written
+		return remote_write(tokenreq,size,offset,request_copy);
+	} else if( !strcmp(firstarg,"truncate")){
+		tokenreq = strtok(NULL, " ,");
+		off_t newsize = (off_t)atoi(strtok(NULL, " ,"));
+		return remote_truncate(tokenreq,newsize);
 	}
 	
+}
+
+char* remote_truncate(const char *path, off_t newsize){
+	char* full_path = (char*)malloc(strlen(path)+strlen(root_path)+1);
+	strcpy(full_path,root_path);
+	strcat(full_path,path);
 	
+	int retstat = truncate(full_path, newsize);
+	char* resp=(char*)malloc(sizeof(int)+1);;
+	sprintf(resp,"%d",retstat);
+	return resp;	
+}
+
+char* remote_write(const char *pointer, size_t size, off_t offset, char* buffer){
+	char* buffer_freer = buffer;
+	buffer = strchr(buffer,',')+1;
+	buffer = strchr(buffer,',')+1;
+	buffer = strchr(buffer,',')+1;
+	buffer = strchr(buffer,',')+1;
+	int x = pwrite(atoi(pointer),buffer,size,offset);
+	char* written=(char*)malloc(sizeof(int)+1);;
+	sprintf(written,"%d",x);
+	free(buffer_freer);
+	return written;
+}
+
+char* remote_release(const char *pointer){
+	close(atoi(pointer));
+	return "";
+}
+
+char* remote_read(const char *pointer, size_t size, off_t offset){
+	char* buffer = (char*)calloc(size,sizeof(char));
+	pread(atoi(pointer),buffer,size,offset);
+	return buffer;
 }
 
 char* remote_mkdir(const char *path, mode_t mode){
@@ -96,7 +152,7 @@ char* remote_getattr(const char *path){
 
 char* remote_readdir(const char *path){
 	DIR *dir;
-	char* entry_list = (char*)malloc(1);
+	char* entry_list = (char*)calloc(1,sizeof(char));
 	struct dirent *ent = (struct dirent*)malloc(sizeof(struct dirent));
 	
 	char* full_path = (char*)malloc(strlen(path)+strlen(root_path)+1);
@@ -119,8 +175,18 @@ char* remote_readdir(const char *path){
 	return entry_list;			 
 }
 
-char* remote_open(const char *path){
+char* remote_open(const char *path, int flags){
+	int fd;
 	
+	char* full_path = (char*)malloc(strlen(path)+strlen(root_path)+1);
+	strcpy(full_path,root_path);
+	strcat(full_path,path);
+	
+	char* file_pointer = (char*)calloc(sizeof(int),sizeof(char));
+	fd = open(full_path, flags);
+
+	sprintf(file_pointer,"%d",fd);
+	return file_pointer;
 }
 
 
@@ -151,7 +217,7 @@ int main(int argc, char *argv[]){
 	}
 	
 	int sock, connected, bytes_recieved , true = 1;  
-	char rec_data[1024];    
+	char rec_data[4096];    
 
 	struct sockaddr_in server_addr,client_addr;    
 	int sin_size;

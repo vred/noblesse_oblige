@@ -124,23 +124,41 @@ static int SNFS_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
 	return retstat;
 }
 
-/*static int SNFS_open(const char *path, struct fuse_file_info *fi){
+static int SNFS_open(const char *path, struct fuse_file_info *fi){
 	int retstat = 0;
-    int fd;
     
-   
-    if (fd < 0)
-		//call error 
-    
-    fi->fh = fd;
-    
+    char* request = calloc(1000,sizeof(char));
+	char* response = calloc(11111,sizeof(char));
+	strcpy(request,"open, ");
+	strcat(request, path);
+	char flag_string[32];
+	sprintf(flag_string,", %d",fi->flags);
+	strcat(request,flag_string);
+	//request to open a file
+	sendRequestToServer(request, response, 1024);
+    fi->fh = atoi(response);
+	if(atoi(response)==0){
+		retstat=-ENOENT;
+	}
     return retstat;
 }
 
 static int SNFS_read(const char *path, char *buf, size_t size, off_t offset,
 		      struct fuse_file_info *fi){
-	return 0;			  
-}*/
+	
+	int retstat = 0;
+    char* request = calloc(1000,sizeof(char));
+	char* response = calloc(11111,sizeof(char));
+	strcpy(request,"read, ");
+	char info[64];
+	sprintf(info,"%lu, %d, %d",fi->fh, (int)size, (int)offset);
+	strcat(request, info);
+	//request the info from the file
+	sendRequestToServer(request, response, 4096);
+	strcpy(buf,response);
+	retstat = strlen(buf);
+    return retstat;		  
+}
 
 static int SNFS_opendir(const char *path, struct fuse_file_info *fi){
 	int retstat = 0;
@@ -171,7 +189,7 @@ static int SNFS_releasedir(const char *path, struct fuse_file_info *fi){
     return retstat;
 }
 
-int SNFS_mkdir(const char *path, mode_t mode)
+static int SNFS_mkdir(const char *path, mode_t mode)
 {
     int retstat = 0;
    
@@ -188,12 +206,65 @@ int SNFS_mkdir(const char *path, mode_t mode)
     return retstat;
 }
 
+static int SNFS_release(const char *path, struct fuse_file_info *fi)
+{
+    int retstat = 0;
+    
+    char* request = calloc(1000,sizeof(char));
+	char* response = calloc(11111,sizeof(char));
+	strcpy(request,"release, ");
+	char fh[32];
+	sprintf(fh,"%lu",fi->fh);
+	strcat(request, fh);
+	//request the file to close
+	sendRequestToServer(request, response, 1024);
+    
+    return retstat;
+}
+
+static int SNFS_write(const char *path, const char *buf, size_t size, off_t offset,
+	     struct fuse_file_info *fi)
+{
+    int retstat = 0;
+    
+    char* request = calloc(1000,sizeof(char));
+	char* response = calloc(11111,sizeof(char));
+	strcpy(request,"write, ");
+	char info[64];
+	sprintf(info,"%lu, %d, %d, ",fi->fh, (int)size, (int)offset);
+	strcat(request, info);
+	strcat(request, buf);
+	//send the info to the file
+	sendRequestToServer(request, response, 4096);
+	retstat = atoi(response);
+    return retstat;
+}
+
+static int SNFS_truncate(const char *path, off_t newsize)
+{
+    int retstat = 0;  
+	char* request = calloc(1000,sizeof(char));
+	char* response = calloc(11111,sizeof(char));
+	strcpy(request,"truncate, ");
+	strcat(request,path);
+	char off[32];
+	sprintf(off,", %d",(int)newsize);
+	strcat(request, off);
+	//request the directory to close
+	sendRequestToServer(request, response, 1024);
+    
+    retstat = atoi(response);
+
+    
+    return retstat;
+}
+
 static struct fuse_operations SNFS_oper = {
 	//.create		= SNFS_create,
-	//.open		= SNFS_open,
-	//.write		= SNFS_write,
-	//.close		= SNFS_close,
-	//.truncate	= SNFS_truncate,
+	.open		= SNFS_open,
+	.write		= SNFS_write,
+	.release	= SNFS_release,
+	.truncate	= SNFS_truncate,
 	.read		= SNFS_read,
 	.opendir	= SNFS_opendir,
 	.readdir	= SNFS_readdir,
