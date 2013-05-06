@@ -82,6 +82,9 @@ void* request_handler(void* connection){
 		tokenreq = strtok(NULL, " ,");
 		mode_t mode = (mode_t)atoi(strtok(NULL, " ,"));
 		response = remote_create(tokenreq,mode);
+	} else if( !strcmp(firstarg,"unlink")){
+		tokenreq = strtok(NULL, " ,");
+		response = remote_unlink(tokenreq);
 	}
 	
 		  
@@ -227,6 +230,14 @@ char* remote_open(const char *path, int flags){
 	return file_pointer;
 }
 
+char* remote_unlink(const char *path){
+	char* full_path = (char*)malloc(strlen(path)+strlen(root_path)+1);
+	strcpy(full_path,root_path);
+	strcat(full_path,path);
+	unlink(full_path);
+	char* ret_val = (char*)calloc(1,1);
+	return ret_val;
+}
 
 int main(int argc, char *argv[]){
 	if(argc != 5){

@@ -14,5 +14,6 @@ char* remote_release(const char *pointer);
 char* remote_write(const char *pointer, size_t size, off_t offset, char* buffer);
 char* remote_truncate(const char *path, off_t newsize);
 char* remote_create(const char *path, mode_t mode);
+char* remote_unlink(const char *path);
 
 #endif

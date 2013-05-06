@@ -279,6 +279,19 @@ static int SNFS_create(const char *path, mode_t mode, struct fuse_file_info *fi)
         
 }
 
+static int SNFS_unlink(const char *path)
+{
+    int retstat = 0;
+    
+    char* request = calloc(1000,sizeof(char));
+	char* response = calloc(11111,sizeof(char));
+	strcpy(request,"unlink, ");
+	strcat(request, path);
+	sendRequestToServer(request, response, 1024);
+    return retstat;
+	
+}
+
 static struct fuse_operations SNFS_oper = {
 	.create		= SNFS_create,
 	.open		= SNFS_open,
@@ -291,6 +304,7 @@ static struct fuse_operations SNFS_oper = {
 	.releasedir	= SNFS_releasedir,
 	.mkdir		= SNFS_mkdir,
 	.getattr	= SNFS_getattr,
+	.unlink 	= SNFS_unlink,
 };
 
 int main(int argc, char *argv[])
