@@ -91,6 +91,7 @@ void* request_handler(void* connection){
 		  
 	free(response);	   
 	close(connected);
+	free((int*)connection);
 	pthread_exit(0);
 }
 
@@ -154,7 +155,7 @@ char* remote_mkdir(const char *path, mode_t mode){
 }
 
 char* remote_releasedir(const char *pointer){
-	closedir((DIR *) (uintptr_t) atoi(pointer));
+	closedir((DIR *) (uintptr_t) strtoull(pointer,NULL,0));
 	char* ret_val = (char*)calloc(1,1);
 	return ret_val;
 }
@@ -165,7 +166,6 @@ char* remote_opendir(const char *path){
 	char* full_path = (char*)malloc(strlen(path)+strlen(root_path)+1);
 	strcpy(full_path,root_path);
 	strcat(full_path,path);
-	
 	char* direct = (char*)calloc(sizeof(DIR*),sizeof(char));
 	dp = opendir(full_path);
 	sprintf(direct,"%lu",(long unsigned int)dp);

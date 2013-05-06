@@ -168,7 +168,7 @@ static int SNFS_opendir(const char *path, struct fuse_file_info *fi){
 	strcat(request, path);
 	//request the directory pointer from the server
 	sendRequestToServer(request, response, 1024);
-	fi->fh = (intptr_t) atoi(response);
+	fi->fh = (intptr_t) strtoull(response,NULL,0);
 	if(atoi(response)==0){
 		retstat=-ENOENT;
 	}
