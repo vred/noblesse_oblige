@@ -326,6 +326,7 @@ int main(int argc, char *argv[])
 	}
 	else{
 		perror("Incorrect arguments!");	
+		return -1;	
 	}
 	if(!strcmp(argv[3],"-port")){
 		port = atoi(argv[4]);
@@ -338,6 +339,7 @@ int main(int argc, char *argv[])
 	}
 	else{
 		perror("Incorrect arguments!");	
+		return -1;	
 	}
 	if(!strcmp(argv[5],"-port")){
 		port = atoi(argv[6]);
@@ -350,6 +352,7 @@ int main(int argc, char *argv[])
 	}
 	else{
 		perror("Incorrect arguments!");	
+		return -1;	
 	}
 	
 	char** fuse_pass_argument = malloc(2*sizeof(char*));

@@ -28,8 +28,6 @@ void* request_handler(void* connection){
 	bytes_recieved = recv(connected,rec_data,4096,0);
 		
 	rec_data[bytes_recieved]='\0';
-					  
-	printf("SUP? REQUEST = %s\n",rec_data);
 	  
 	fflush(stdout);
 		 
@@ -88,7 +86,6 @@ void* request_handler(void* connection){
 	}
 	
 		  
-	printf("Thread %d got a response, it's %d big and its %s\n",getpid(),(int)strlen(response),response);
 		  
 	send(connected,response,4096,0);
 		  
@@ -254,6 +251,7 @@ int main(int argc, char *argv[]){
 	}
 	else{
 		perror("Incorrect arguments!");	
+		return -1;	
 	}
 	if(!strcmp(argv[3],"-port")){
 		port = atoi(argv[4]);
@@ -262,7 +260,8 @@ int main(int argc, char *argv[]){
 		root_path = strdup(argv[4]);
 	}
 	else{
-		perror("Incorrect arguments!");	
+		perror("Incorrect arguments!");
+		return -1;	
 	}
 	
 	int sock, true = 1;  
@@ -297,7 +296,6 @@ int main(int argc, char *argv[]){
 		exit(1);
 	}
 	
-	printf("\nTCPServer Waiting for client on port %d\n",port);
 	fflush(stdout);
 
 
@@ -306,9 +304,6 @@ int main(int argc, char *argv[]){
 		sin_size = sizeof(struct sockaddr_in);
 		int* connected = (int*)malloc(sizeof(int));
 		*connected = accept(sock, (struct sockaddr *)&client_addr,(socklen_t * __restrict__)&sin_size);
-		
-			printf("I got a connection from (%s , %d)\n",
-			   inet_ntoa(client_addr.sin_addr),ntohs(client_addr.sin_port));
 		
 		pthread_t thread;
 		pthread_create(&thread, NULL, request_handler, (void *) connected);
