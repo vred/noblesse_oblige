@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
+#include <fcntl.h>
 #include <pthread.h>
 #include <dirent.h>
 #include "../SNFS.h"
@@ -17,52 +18,92 @@
 int port;
 char* root_path;
 
-char* request_handler(char* request){
-	char* request_copy = strdup(request);
-	char* tokenreq = strtok(request," ,");
+void* request_handler(void* connection){
+	int bytes_recieved = 0;
+	char rec_data[4096]; 
+	int connected = *(int*)connection;
+	
+	//Receive the request
+			   
+	bytes_recieved = recv(connected,rec_data,4096,0);
+		
+	rec_data[bytes_recieved]='\0';
+					  
+	printf("SUP? REQUEST = %s\n",rec_data);
+	  
+	fflush(stdout);
+		 
+	char* response;
+	
+	char* request_copy = strdup(rec_data);
+	char* tokenreq = strtok(rec_data," ,");
 	char* firstarg = tokenreq;
 	//switch on first argument of request which is system call name
 	if( !strcmp(firstarg,"readdir") )
 	{
 		tokenreq = strtok(NULL, " ,");
-		return remote_readdir(tokenreq);
+		response = remote_readdir(tokenreq);
 	} else if( !strcmp(firstarg,"getattr")){
 		tokenreq = strtok(NULL, " ,");
-		return remote_getattr(tokenreq);
+		response = remote_getattr(tokenreq);
 	} else if( !strcmp(firstarg,"opendir")){
 		tokenreq = strtok(NULL, " ,");
-		return remote_opendir(tokenreq);
+		response = remote_opendir(tokenreq);
 	} else if( !strcmp(firstarg,"releasedir")){
 		tokenreq = strtok(NULL, " ,");
-		return remote_releasedir(tokenreq);
+		response = remote_releasedir(tokenreq);
 	} else if( !strcmp(firstarg,"mkdir")){
 		tokenreq = strtok(NULL, " ,");
 		mode_t mode = (mode_t)atoi(strtok(NULL, " ,"));
-		return remote_mkdir(tokenreq,mode);
+		response = remote_mkdir(tokenreq,mode);
 	} else if( !strcmp(firstarg,"read")){
 		tokenreq = strtok(NULL, " ,");
 		size_t size = (size_t)atoi(strtok(NULL, " ,"));
 		off_t offset = (off_t)atoi(strtok(NULL, " ,"));
-		return remote_read(tokenreq,size,offset);
+		response = remote_read(tokenreq,size,offset);
 	} else if( !strcmp(firstarg,"open")){
 		tokenreq = strtok(NULL, " ,");
 		int flags = atoi(strtok(NULL, " ,"));
-		return remote_open(tokenreq, flags);
+		response = remote_open(tokenreq, flags);
 	} else if( !strcmp(firstarg,"release")){
 		tokenreq = strtok(NULL, " ,");
-		return remote_release(tokenreq);
+		response = remote_release(tokenreq);
 	} else if( !strcmp(firstarg,"write")){
 		tokenreq = strtok(NULL, " ,");
 		size_t size = (size_t)atoi(strtok(NULL, " ,"));
 		off_t offset = (off_t)atoi(strtok(NULL, " ,"));
 		//cut off the string so it just has the info to be written
-		return remote_write(tokenreq,size,offset,request_copy);
+		response = remote_write(tokenreq,size,offset,request_copy);
 	} else if( !strcmp(firstarg,"truncate")){
 		tokenreq = strtok(NULL, " ,");
 		off_t newsize = (off_t)atoi(strtok(NULL, " ,"));
-		return remote_truncate(tokenreq,newsize);
+		response = remote_truncate(tokenreq,newsize);
+	} else if( !strcmp(firstarg,"create")){
+		tokenreq = strtok(NULL, " ,");
+		mode_t mode = (mode_t)atoi(strtok(NULL, " ,"));
+		response = remote_create(tokenreq,mode);
 	}
 	
+		  
+	printf("Got my response, it's %d big and its %s\n",(int)strlen(response),response);
+		  
+	send(connected,response,4096,0);
+		  
+	free(response);	   
+	close(connected);
+	pthread_exit(0);
+}
+
+char* remote_create(const char *path, mode_t mode){
+	char* full_path = (char*)malloc(strlen(path)+strlen(root_path)+1);
+	strcpy(full_path,root_path);
+	strcat(full_path,path);
+	
+	char* point = (char*)calloc(1,sizeof(int));
+	
+	int fd = creat(full_path, mode);
+	sprintf(point,"%d",fd);
+	return point;
 }
 
 char* remote_truncate(const char *path, off_t newsize){
@@ -91,7 +132,8 @@ char* remote_write(const char *pointer, size_t size, off_t offset, char* buffer)
 
 char* remote_release(const char *pointer){
 	close(atoi(pointer));
-	return "";
+	char* ret_val = (char*)calloc(1,1);
+	return ret_val;
 }
 
 char* remote_read(const char *pointer, size_t size, off_t offset){
@@ -105,17 +147,16 @@ char* remote_mkdir(const char *path, mode_t mode){
 	char* full_path = (char*)malloc(strlen(path)+strlen(root_path)+1);
 	strcpy(full_path,root_path);
 	strcat(full_path,path);
-	printf("mkdir here, full_path=%s and mode=%08x\n",full_path,mode);
 	int retstat = mkdir(full_path, mode);
-    if (retstat < 0){
-		//error
-	}
-	return "";
+    char* resp=(char*)malloc(sizeof(int)+1);;
+	sprintf(resp,"%d",retstat);
+	return resp;
 }
 
 char* remote_releasedir(const char *pointer){
 	closedir((DIR *) (uintptr_t) atoi(pointer));
-	return "";
+	char* ret_val = (char*)calloc(1,1);
+	return ret_val;
 }
 
 char* remote_opendir(const char *path){
@@ -127,10 +168,8 @@ char* remote_opendir(const char *path){
 	
 	char* direct = (char*)calloc(sizeof(DIR*),sizeof(char));
 	dp = opendir(full_path);
-	if(dp==NULL){
-		//error
-	}
-	sprintf(direct,"%d",dp);
+	
+	sprintf(direct,"%lu",(long unsigned int)dp);
 	return direct;
 }
 
@@ -144,9 +183,9 @@ char* remote_getattr(const char *path){
 	lstat(full_path,stat_buf);
 		
 	char* status = (char*)calloc(sizeof(struct stat),sizeof(char));
-	sprintf(status,"%d, %d, %d, %d, %d, %d, %d, %d, %d, %d",stat_buf->st_mode,stat_buf->st_ino,stat_buf->st_dev,stat_buf->st_uid,
-						stat_buf->st_gid,stat_buf->st_atime,stat_buf->st_ctime,
-							stat_buf->st_mtime,stat_buf->st_nlink,stat_buf->st_size);
+	sprintf(status,"%d, %d, %d, %d, %d, %d, %d, %d, %d, %d",(int)stat_buf->st_mode,(int)stat_buf->st_ino,(int)stat_buf->st_dev,(int)stat_buf->st_uid,
+						(int)stat_buf->st_gid,(int)stat_buf->st_atime,(int)stat_buf->st_ctime,
+							(int)stat_buf->st_mtime,(int)stat_buf->st_nlink,(int)stat_buf->st_size);
 	return status;
 }
 
@@ -216,8 +255,8 @@ int main(int argc, char *argv[]){
 		perror("Incorrect arguments!");	
 	}
 	
-	int sock, connected, bytes_recieved , true = 1;  
-	char rec_data[4096];    
+	int sock, true = 1;  
+	   
 
 	struct sockaddr_in server_addr,client_addr;    
 	int sin_size;
@@ -255,38 +294,17 @@ int main(int argc, char *argv[]){
 	while(1)
 	{  
 		sin_size = sizeof(struct sockaddr_in);
-
-		connected = accept(sock, (struct sockaddr *)&client_addr,&sin_size);
-
-		printf("I got a connection from (%s , %d)\n",
+		int* connected = (int*)malloc(sizeof(int));
+		*connected = accept(sock, (struct sockaddr *)&client_addr,(socklen_t * __restrict__)&sin_size);
+		
+			printf("I got a connection from (%s , %d)\n",
 			   inet_ntoa(client_addr.sin_addr),ntohs(client_addr.sin_port));
-
-		//In this exmaple, server is only single-threaded
-		{
-			
-		  bytes_recieved = recv(connected,rec_data,1024,0);
-			
-		 rec_data[bytes_recieved]='\0';
-						  
-		  printf("SUP? REQUEST = %s\n",rec_data);
-		  
-		   fflush(stdout);
-		  
-		  char* response = request_handler(rec_data);
-		  
-		  printf("Got my response, it's %d big and its %s\n",strlen(response),response);
-		  
-		  send(connected,response,4096,0);
-		 // printf("\nClient wants to read file = %s " , recv_data);
-
-		 
-
-		  //Assume only file01 and file02 are existing now
-		  
-		   
-		  close(connected);
-
-		}
+		
+		pthread_t thread;
+		pthread_create(&thread, NULL, request_handler, (void *) connected);
+		pthread_detach(thread);
+		
+		
 	}       
 
   close(sock);

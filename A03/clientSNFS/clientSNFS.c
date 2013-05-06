@@ -202,7 +202,7 @@ static int SNFS_mkdir(const char *path, mode_t mode)
 	strcat(request,mode_string);
 	//request the server to make a directory
 	sendRequestToServer(request, response, 1024);
-            
+    retstat = atoi(response);        
     return retstat;
 }
 
@@ -254,13 +254,33 @@ static int SNFS_truncate(const char *path, off_t newsize)
 	sendRequestToServer(request, response, 1024);
     
     retstat = atoi(response);
-
     
     return retstat;
 }
 
+static int SNFS_create(const char *path, mode_t mode, struct fuse_file_info *fi)
+{
+    int retstat = 0;
+    
+    char* request = calloc(1000,sizeof(char));
+	char* response = calloc(11111,sizeof(char));
+	strcpy(request,"create, ");
+	strcat(request, path);
+	char mode_string[32];
+	sprintf(mode_string,", %d",mode);
+	strcat(request,mode_string);
+	//request to make a new file
+	sendRequestToServer(request, response, 1024);
+    fi->fh = atoi(response);
+	if(atoi(response)==0){
+		retstat=-ENOENT;
+	}
+    return retstat;
+        
+}
+
 static struct fuse_operations SNFS_oper = {
-	//.create		= SNFS_create,
+	.create		= SNFS_create,
 	.open		= SNFS_open,
 	.write		= SNFS_write,
 	.release	= SNFS_release,

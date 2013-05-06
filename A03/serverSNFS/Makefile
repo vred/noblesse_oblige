@@ -4,7 +4,7 @@ CFLAG = -Wall -lpthread
 
 target : serverSNFS 
 
-clientSNFS: serverSNFS.c
+serverSNFS: serverSNFS.c
 	$(CC) $(CFLAG) -o $@ $<
 
 
