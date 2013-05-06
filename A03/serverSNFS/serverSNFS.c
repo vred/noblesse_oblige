@@ -85,7 +85,7 @@ void* request_handler(void* connection){
 	}
 	
 		  
-	printf("Got my response, it's %d big and its %s\n",(int)strlen(response),response);
+	printf("Thread %d got a response, it's %d big and its %s\n",getpid(),(int)strlen(response),response);
 		  
 	send(connected,response,4096,0);
 		  
@@ -168,7 +168,6 @@ char* remote_opendir(const char *path){
 	
 	char* direct = (char*)calloc(sizeof(DIR*),sizeof(char));
 	dp = opendir(full_path);
-	
 	sprintf(direct,"%lu",(long unsigned int)dp);
 	return direct;
 }
