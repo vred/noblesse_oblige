@@ -169,6 +169,7 @@ char* remote_opendir(const char *path){
 	char* direct = (char*)calloc(sizeof(DIR*),sizeof(char));
 	dp = opendir(full_path);
 	sprintf(direct,"%lu",(long unsigned int)dp);
+	free(full_path);
 	return direct;
 }
 
@@ -185,6 +186,7 @@ char* remote_getattr(const char *path){
 	sprintf(status,"%d, %d, %d, %d, %d, %d, %d, %d, %d, %d",(int)stat_buf->st_mode,(int)stat_buf->st_ino,(int)stat_buf->st_dev,(int)stat_buf->st_uid,
 						(int)stat_buf->st_gid,(int)stat_buf->st_atime,(int)stat_buf->st_ctime,
 							(int)stat_buf->st_mtime,(int)stat_buf->st_nlink,(int)stat_buf->st_size);
+	free(full_path);
 	return status;
 }
 
@@ -200,7 +202,8 @@ char* remote_readdir(const char *path){
 	if ((dir = opendir (full_path)) != NULL) {
 	  /* print all the files and directories within directory */
 	  while ((ent = readdir (dir)) != NULL) {
-	    entry_list = (char*)realloc(entry_list,strlen(entry_list)+strlen(ent->d_name)+2);
+		if(strlen(ent->d_name) > 0)
+			entry_list = (char*)realloc(entry_list,strlen(entry_list)+FILENAME_MAX+2);
 	    entry_list = strcat(entry_list,", ");
 	    entry_list = strcat(entry_list,ent->d_name);
 	  }
@@ -210,6 +213,8 @@ char* remote_readdir(const char *path){
 	  perror ("");
 	  return NULL;
 	}
+	free(full_path);
+	free(ent);
 	return entry_list;			 
 }
 
@@ -224,6 +229,7 @@ char* remote_open(const char *path, int flags){
 	fd = open(full_path, flags);
 
 	sprintf(file_pointer,"%d",fd);
+	free(full_path);
 	return file_pointer;
 }
 
@@ -233,6 +239,7 @@ char* remote_unlink(const char *path){
 	strcat(full_path,path);
 	unlink(full_path);
 	char* ret_val = (char*)calloc(1,1);
+	free(full_path);
 	return ret_val;
 }
 
@@ -313,5 +320,6 @@ int main(int argc, char *argv[]){
 	}       
 
   close(sock);
+  free(root_path);
   return 0;
 } 
